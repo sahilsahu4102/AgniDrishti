@@ -1,0 +1,17 @@
+# secrets (§19: keep secrets and data/ out of git)
+.env
+
+# downloads and outputs, except the hand-made labels and the sample
+data/*
+!data/labels*.csv
+!data/sample.csv
+
+# model weights, exports, training runs
+*.pt
+*.onnx
+*_ncnn_model/
+runs/
+
+# python
+__pycache__/
+.venv/
