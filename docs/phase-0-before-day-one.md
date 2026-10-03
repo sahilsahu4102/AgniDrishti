@@ -66,7 +66,7 @@ out;
 
 ## Exit checklist
 
-- [ ] Rules answer quoted (0.1) and venue answers recorded (0.2)
+- [x] Rules answer quoted (0.1) and venue answers recorded (0.2)
 - [ ] Repo is up, everyone can push, `.gitignore` committed
 - [x] FIRMS key works; a test message reached the Telegram group
 - [x] `win_a.csv`, `win_b.csv` and `hist.csv` pulled before 1 Nov 2026; NOAA-20/21 checked
@@ -89,10 +89,10 @@ out;
 
 | Question | Answer | Source (link or quote) |
 | --- | --- | --- |
-| Pre-written code allowed? | | |
-| Data downloads and accounts allowed? | | |
-| Telegram works on venue Wi-Fi? | | |
-| Incense allowed? | | |
+| Pre-written code allowed? | Yes. Source code and demo are submitted by **9 Oct 2026** | Team lead, 2026-10-03 |
+| Data downloads and accounts allowed? | Yes | Same |
+| Telegram works on venue Wi-Fi? | Not applicable to a submitted demo; recheck if there is a live round | Same |
+| Incense allowed? | Not needed: the demo uses a smoke video in front of a phone camera | Same |
 
 ### Accounts
 
@@ -143,7 +143,7 @@ out;
 
 - Pyronear weights file: `data/models/pyronear/yolo11s_rapid-raccoon_v8.1.0/best.pt`. Its only class is named `item`, so count boxes rather than filtering on "smoke".
 - Smoke check (task 0.17): at imgsz 1024, conf 0.2, iou 0.01, 3 of 3 labelled Pyro-SDIS frames got one box each on the labelled plume, with confidences 0.75, 0.26 and 0.47 (box centres within 0.03 of the labels). No box on the overcast sky. About 0.7 s per frame on the laptop CPU (ultralytics 8.x in `.venv`). Evidence: `docs/img/phase-0-smoke-check.jpg` (Pyro-SDIS, Apache-2.0).
-- D-Fire run (where, epochs so far, mAP50 for smoke and fire):
+- D-Fire run (where, epochs so far, mAP50 for smoke and fire): notebook `train_dfire.ipynb` is ready for Kaggle. It uses the Kaggle copy `sayedgamal99/smoke-fire-detection-yolo` and trains YOLO11n at 640 px for 30 epochs. Not run yet.
 - Clips: smoke __ (__ min); negatives __ (__ min)
 - Camera option (A/B/C):
 - Inventory: Pi or ESP32 ☐ webcam ☐ SG90 + bracket ☐ servo 5 V supply ☐ tripod ☐ extension cord ☐ backdrop ☐ spare SG90 ☐ PCA9685 ☐ power bank ☐
@@ -156,7 +156,9 @@ out;
 | Camera smoke model (§7, §11.1) | `pyronear/yolo11s_colorful-chameleon_v3.0.0`, imgsz 1024, conf 0.25 | Not published any more. The latest versioned Pyronear YOLO11s is `yolo11s_rapid-raccoon_v8.1.0`, whose card uses imgsz 1024, conf 0.2, iou 0.01. The unversioned `pyronear/yolov11s` holds different, newer weights. | Pinned v8.1.0 so tests and the demo use the same weights. Phase 1 starts at conf 0.2; Phase 3 locks the final value. `yolov11s` is an optional comparison in Phase 3. |
 | Selecting the state polygon (§7) | Match "Uttarakhand" or "Uttaranchal" | The name is `Uttarākhand` | `prep` selects `shapeISO == 'IN-UT'` |
 | Sentinel-2 offset (§11.4) | Default scale 0.0001, offset 0 | Collection 1 carries offset −0.1 | `s2` reads scale and offset from `raster:bands` |
-| Window B sensor (§4.1) | Replay uses VIIRS S-NPP | S-NPP recorded nothing over the box from 28 Apr to early June 2026. Over the same days NOAA-20, NOAA-21 and MODIS recorded plenty, e.g. NOAA-20 had 1,522 detections on 18–22 May. With S-NPP, Window B would lose May, the peak month. | **Decision needed.** Recommended: Window B from VIIRS_NOAA20_SP (`win_b_noaa20.csv`): full window, same VIIRS 375 m product, and the satellite live mode uses. Window A and the history stay on S-NPP. |
+| Window B sensor (§4.1) | Replay uses VIIRS S-NPP | S-NPP recorded nothing over the box from 28 Apr to early June 2026. Over the same days NOAA-20, NOAA-21 and MODIS recorded plenty, e.g. NOAA-20 had 1,522 detections on 18–22 May. With S-NPP, Window B would lose May, the peak month. | **Decided 2026-10-03: Window B uses VIIRS_NOAA20_SP.** `data/win_b.csv` is now the NOAA-20 file (9,968 rows); the S-NPP partial is kept as `data/win_b_snpp.csv`. Window A and the history stay on S-NPP. |
+| Camera node hardware (§11.2) | Option A (Pi + servo) recommended | Team chose a phone camera | Option C: an Android phone as an IP camera, no servo, inference on the laptop. The node does not pan; it only checks alerts inside the phone's field of view. |
+| Schedule (§4, §15.2) | 36-hour event | Code and demo are submitted by 9 Oct 2026 | Phases dated in `implementation-plan.md`; pitch slides come last |
 
 ### Forest division contact (§22)
 

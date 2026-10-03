@@ -8,11 +8,16 @@ Like the spec, these docs contain no project code, because the event may restric
 
 | Phase | When | Goal | Exit | Document |
 | --- | --- | --- | --- | --- |
-| 0 Before day one | Before the event. S-NPP pulls by **1 Nov 2026** | Accounts, data, hardware and open questions sorted | Phase 0 checklist | [phase-0-before-day-one.md](phase-0-before-day-one.md) |
-| 1 Foundations | Hours 0–8 | One alert scored end to end, then all of Window A | Gate 1 | [phase-1-foundations.md](phase-1-foundations.md) |
-| 2 End to end | Hours 8–20 | Full replay plus one live camera confirmation | Gate 2 | [phase-2-end-to-end.md](phase-2-end-to-end.md) |
-| 3 Prove it | Hours 20–32 | Labels, tuned weights, metrics, false-alarm test | Gate 3: code freeze | [phase-3-prove-it.md](phase-3-prove-it.md) |
-| 4 Freeze and demo | Hours 32–36 | Three rehearsals, backup video, final slides | Gate 4: demo-ready | [phase-4-freeze-and-demo.md](phase-4-freeze-and-demo.md) |
+| 0 Before day one | Done by 3 Oct 2026 | Accounts, data, hardware and open questions sorted | Phase 0 checklist | [phase-0-before-day-one.md](phase-0-before-day-one.md) |
+| 1 Foundations | 4 Oct | One alert scored end to end, then all of Window A | Gate 1 | [phase-1-foundations.md](phase-1-foundations.md) |
+| 2 End to end | 5–6 Oct | Full replay plus one live camera confirmation | Gate 2 | [phase-2-end-to-end.md](phase-2-end-to-end.md) |
+| 3 Prove it | 7 Oct | Labels, tuned weights, metrics, false-alarm test | Gate 3: code freeze | [phase-3-prove-it.md](phase-3-prove-it.md) |
+| 4 Freeze and demo | 8–9 Oct | Rehearsals, recorded demo, README, slides; **submit by 9 Oct** | Gate 4: demo-ready | [phase-4-freeze-and-demo.md](phase-4-freeze-and-demo.md) |
+
+**Changes decided on 3 Oct 2026** (details in the Phase 0 report):
+- **Submission:** code and demo are submitted by 9 Oct 2026, and pre-written code is allowed. The "hours" in the phase docs map to the dates above.
+- **Camera:** an Android phone is the camera (§11.2 option C). There is no Pi and no servo, so skip the servo tasks. The node checks only alerts inside the phone's field of view, and inference runs on the laptop.
+- **Window B:** uses NOAA-20, because S-NPP had no data from 28 Apr to early June 2026.
 
 Supporting document: [labelling-guide.md](labelling-guide.md), finished in Phase 1 and used in Phases 2–3.
 
