@@ -70,15 +70,13 @@ The `score` self-check is one small `__main__` block of asserts, with no test fr
 
 | Task | Done when |
 | --- | --- |
-| Stream the camera to the laptop: a USB webcam through OpenCV, or an ESP32 at `http://<ip>:81/stream`. The Pi Camera Module needs Picamera2. | Frames show in a window. |
+| Stream the phone camera to the laptop (decided 3 Oct: phone, no Pi, no servo). Run the IP Webcam app on the phone, on the same Wi-Fi as the laptop. Set `CAMERA_SOURCE` to `http://<phone-ip>:8080/video`. | Frames show in a window on the laptop. |
 | Flush buffered frames before every read (§19). | Cover the lens, uncover it, grab a frame: it shows the uncovered view. |
-| Sweep the servo on command. | −90°, 0° and +90° look right by eye; calibration recorded below. |
 
-Keep the servo calibration knobs in `config`:
+There is no servo, so the camera knobs in `config` are:
 
-- **Pulse widths:** gpiozero's default 1–2 ms pulses move an SG90 through only part of its range. Widen them to about 0.5–2.5 ms and adjust until −90/0/+90 look right.
-- **Sign:** set it to ±1 so that a positive angle turns clockwise.
-- **Heading:** measure the compass heading at 0° with a phone. That value is the node heading.
+- **`NODE_HEADING`:** the compass bearing the phone faces. Measure it with a second phone's compass app.
+- **`NODE_FOV_DEG`:** the phone's horizontal field of view, about 60° for a main camera. The node skips alerts outside heading ± FOV/2.
 
 **Product + pitch**
 
@@ -100,13 +98,13 @@ Keep the servo calibration knobs in `config`:
 
 ## Gate 1 checklist (§15.3)
 
-- [ ] Window A pulled and clipped, row count printed. Geo; pasted output.
-- [ ] WorldCover tiles, DEM tiles, villages and history cells ready. Geo; file and row counts.
-- [ ] One alert has every feature plus p, r, tier and reasons. Scoring; pasted alert.
-- [ ] Full Window A scored to `data/scored.csv`, tier counts printed. Scoring; pasted counts.
-- [ ] Camera streams to the laptop and the servo sweeps on command. Hardware + bot; calibration values.
+- [x] Window A pulled and clipped, row count printed. Geo; pasted output.
+- [x] WorldCover tiles, DEM tiles, villages and history cells ready. Geo; file and row counts.
+- [x] One alert has every feature plus p, r, tier and reasons. Scoring; pasted alert.
+- [x] Full Window A scored to `data/scored.csv`, tier counts printed. Scoring; pasted counts.
+- [ ] Camera streams to the laptop (servo dropped, decided 3 Oct). Hardware + bot; stream URL and fps.
 - [ ] Dashboard map shows scored alerts. Product; `docs/img/phase-1-dashboard.png`.
-- [ ] Pyronear model detects smoke on a test clip. Vision; `docs/img/phase-1-smoke.png`.
+- [x] Pyronear model detects smoke on a test clip. Vision; `docs/img/phase-1-smoke.png`.
 - [ ] Added by this plan: the score self-check passes, D1–D5 are recorded, and the labelling guide is at v1.
 
 ---
@@ -115,65 +113,116 @@ Keep the servo calibration knobs in `config`:
 
 > Fill this in, then push it with tag `phase-1` ([how](implementation-plan.md#documents-and-pushing)).
 
-**Gate passed at:** hour __ (YYYY-MM-DD HH:MM IST) · **Filled by:** · **Commit:**
+**Gate status (3 Oct 2026):** every item passes except two that need the team lead's laptop and phone: the phone camera stream, and the dashboard screenshot. Tag `phase-1` waits for both. · **Filled by:** Claude Code · **Code:** `config.py`, `geo.py`, `pull.py`, `prep.py`, `check.py`, `score.py`, `store.py`, `app.py`
 
 ### Decisions made at hour 0
 
+Recommended defaults adopted on 3 Oct; the team lead didn't override them.
+
 | # | Decision | Chosen |
 | --- | --- | --- |
-| D1 | VERIFY messages | |
-| D2 | `seen` window | |
-| D3 | `/todo` order | |
-| D4 | Sent marker | |
-| D5 | Labels in git | |
+| D1 | VERIFY messages | Only DISPATCH is sent to Telegram; the bot accepts photos for any non-LOG alert |
+| D2 | `seen` window | Earlier alerts only: the 12 h up to and including the alert's own time (`check.seen`) |
+| D3 | `/todo` order | Newest first (Phase 2) |
+| D4 | Sent marker | `data/cap_<id>.xml` exists only after Telegram returns ok (Phase 2) |
+| D5 | Labels in git | `.gitignore` keeps `data/labels*.csv` and `data/sample.csv` |
 
-### Data counts (paste the printed output)
+### Data counts (printed by `prep.py`)
 
 ```
-win_a.csv rows:          win_a_uk.csv rows:
-hist.csv rows:           hist_uk.csv rows:
-cells.csv rows:          largest n:
-villages.csv rows:
-WorldCover tiles: _/6    DEM tiles: _/20
+win_a: 4692 rows in the box, 3434 inside Uttarakhand -> win_a_uk.csv
+win_b: 9968 rows in the box, 6880 inside Uttarakhand -> win_b_uk.csv   (NOAA-20)
+hist: 54587 rows in the box, 33570 inside Uttarakhand -> hist_uk.csv
+villages: 23165 places (3303 unnamed) -> villages.csv
+cells: 25119 cells from 33570 history detections, largest n 8 -> cells.csv
+WorldCover tiles: 6/6    DEM tiles: 20/20
 ```
 
 ### Window A tiers
 
-| DISPATCH | VERIFY | LOG | Total |
-| --- | --- | --- | --- |
-| | | | |
+`score.py` scores Windows A and B together in 2 min 25 s; the first run also fills the weather cache.
 
-Early cross-check (optional): the share of Window A with `veg` < 0.30 or `farm` > 0.50 is __%. The department reported 39%; expect a higher share here (§14).
+| | DISPATCH | VERIFY | LOG | Total |
+| --- | --- | --- | --- | --- |
+| Window A | 1,919 | 1,243 | 272 | 3,434 |
+| Window B | 4,325 | 2,222 | 333 | 6,880 |
+| Both (`data/scored.csv`) | 6,244 | 3,465 | 605 | 10,314 |
 
-### One alert, end to end (paste)
+Early cross-check: **8.2%** of Window A has `veg` < 0.30 or `farm` > 0.50, against the department's 39%. The spec expected a higher share. The likely reason: the department splits alerts by **Reserve Forest boundary**, and its own document says "Only RF boundaries are there". WorldCover sees vegetation, not legal boundaries, so fires in vegetated land outside Reserve Forest look like forest. This is the limitation the spec accepts (§3.3); say so in the pitch.
+
+### Findings for Phase 3: the spec's starting weights barely discriminate here
+
+With the §10 weights, **61% of alerts are DISPATCH**. Nothing here is a bug; the features look right. The thresholds just don't separate alerts in Uttarakhand:
+
+- **Village distance:** 83% of alerts are within 2 km of an OSM place (17,392 of the 23,165 are hamlets), so nearly every alert gets the +2 for a village under 2 km.
+- **Slope:** the median is 31°, so most alerts also get +1.
+- **Result:** 96% of alerts have r ≥ 2, so "p ≥ 0.6 and r ≥ 2" collapses to "p ≥ 0.6". 5,852 of the 6,244 DISPATCH alerts got there that way.
+- **`seen`:** 62% of alerts have at least one other detection within 1 km and 12 h, which already makes p 0.65.
+- **Recurrence:** the busiest 500 m cell fired only 8 times in 3 years, so the `recur` ≥ 8 rule almost never fires.
+- **Land cover:** only 5% of alerts have `veg` < 0.30 and 6% have `farm` > 0.50.
+
+Per §10.5 and §20, none of these were changed. Candidates to tune on the tune half of the labels in Phase 3:
+
+- the village distances, or counting villages and towns only, without hamlets;
+- the DISPATCH risk bar;
+- the step for `seen`;
+- the `recur` threshold.
+
+### One alert, end to end (from `data/scored.csv`)
 
 ```
-id, veg, tree, farm, burn, recur, seen, village_km, village_name, slope, wind, rh, image
-p, r, tier
-why
+id 2025-11-09_0657_31.2046_78.4332
+veg 0.13, tree 0.00, farm 0.00, burn none, recur 0, seen 2
+village_km 12.6 (Seema), slope 43.7°, wind 8.0 km/h, rh 30%, confidence h, frp 49.34 MW, image none
+p 0.70 (0.5 − 0.30 low vegetation + 0.30 seen + 0.10 high confidence + 0.10 FRP), r 2 (slope + seen ≥ 2), DISPATCH
+why: pixel only 13% vegetation; seen 3 times in 12 h; high confidence; FRP 49 MW; 12.6 km from Seema, slope 44°, wind 8 km/h, RH 30%
 ```
 
 ### Self-check output
 
 ```
+$ python geo.py
+geo ok
+$ python score.py --selftest
+score self-test ok
 ```
 
-### Camera, servo, model
+The self-test covers each p rule with its reason text; the `seen` cap; clipping at 0; the 0.5 + 0.1 + 0.3 float case; all tier edges; the four image overrides; every risk point (village 1.4 / 4 / 6 km, all seven); "weather unavailable"; the alert-id format; and `seen` counting earlier alerts only.
 
-- Camera option, stream URL or index, fps:
-- Flush test:
-- Servo: sign __, min pulse __ ms, max pulse __ ms, heading at 0° = __°
-- Pyronear: weights __, test clip __, smoke frames __ of __, ms per frame on laptop __ / on Pi __
-- D-Fire status:
+### Dashboard
+
+`app.py` (Streamlit + folium), checked with Streamlit's `AppTest`:
+
+- no exceptions;
+- counters show 10,314 / 6,244 / 3,465;
+- the tier filter defaults to DISPATCH and VERIFY;
+- the table has 9,709 rows sorted DISPATCH, then VERIFY, then LOG, and by p within each.
+
+Load time: the first version drew one folium marker per alert and took 66 s per run. One GeoJSON layer brought that down to 5 s for the first load and 2 s for a rerun with LOG on (10,314 alerts). Headless Edge only captured Streamlit's loading skeleton, so the screenshot is a carry-over.
+
+### Camera, model
+
+- Camera option, stream URL or index, fps: option C (phone). Not tested yet; carry-over.
+- Flush test: with the phone stream (carry-over).
+- Phone camera: stream URL __, fps __, heading __°, field of view __°
+- Pyronear: `yolo11s_rapid-raccoon_v8.1.0/best.pt`. On 3 labelled frames: 3 of 3 detected. On sample clips with the 6-frame rule: 3 of 3 smoke clips → smoke, 9 of 9 no-smoke clips → nosmoke. About 0.7 s per frame on the laptop CPU; no Pi.
+- D-Fire status: training on Kaggle (team lead), started 3 Oct.
 
 ### Changes to thresholds and spec
 
 | What | From → To | Why | Who |
 | --- | --- | --- | --- |
-| | | | |
+| Thresholds and weights | none changed | They are tuned once in Phase 3 (§10.5); see the findings above | — |
+| `scored.csv` columns | §8 list → §8 list plus the feature columns (`veg` … `rh`) | Phase 3 can re-tune and re-score without recomputing features | Claude Code |
+| p before tiering | raw sum → rounded to 2 dp | `0.5 + 0.1 + 0.3` is `0.8999999999999999` and would miss DISPATCH | Claude Code |
+| Dashboard markers | one folium marker per alert → one GeoJSON layer | 66 s → 5 s per run | Claude Code |
+| Weather | one request per cell and date → one archive request per 0.25° cell covering its whole date range, cached in `data/weather/` | Same §10.1 values with far fewer calls; a failed lookup gives "weather unavailable" and never stops scoring | Claude Code |
 
 ### Carry-overs
 
-| Item | Owner | Due hour |
+| Item | Owner | Due |
 | --- | --- | --- |
-| | | |
+| Phone camera (IP Webcam) streams to the laptop; flush test; heading and field of view recorded | Team lead | 4 Oct |
+| Dashboard screenshot saved as `docs/img/phase-1-dashboard.png` (open http://localhost:8501) | Team lead | 4 Oct |
+| Both labellers read the labelling guide and label 3 practice alerts together | Product + pitch | 4 Oct |
+| D-Fire weights saved to `data/models/dfire_yolo11n_best.pt`, with their test mAP | Team lead | 5 Oct |

@@ -1,0 +1,17 @@
+pandas
+numpy
+requests
+rasterio
+pyproj
+shapely
+scikit-learn
+pystac-client
+ultralytics
+opencv-python
+huggingface_hub
+python-telegram-bot
+fastapi
+uvicorn
+streamlit
+folium
+streamlit-folium
