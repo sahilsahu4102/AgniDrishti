@@ -68,7 +68,7 @@ out;
 
 - [ ] Rules answer quoted (0.1) and venue answers recorded (0.2)
 - [ ] Repo is up, everyone can push, `.gitignore` committed
-- [ ] FIRMS key works; a test message reached the Telegram group
+- [x] FIRMS key works; a test message reached the Telegram group
 - [x] `win_a.csv`, `win_b.csv` and `hist.csv` pulled before 1 Nov 2026; NOAA-20/21 checked
 - [x] 6 WorldCover tiles, 20 DEM tiles, `villages.json` and `state.geojson` present
 - [ ] Every §21 open item answered
@@ -99,8 +99,8 @@ out;
 | Item | Status |
 | --- | --- |
 | FIRMS key works | Yes, in `.env`. Limit 5,000 transactions per 10 min; the full pull used about 2,100. `VIIRS_NOAA20_NRT` and `VIIRS_NOAA21_NRT` both answer with the S-NPP columns minus `type` (0 fires in the box on 2026-10-02). |
-| Bot username | |
-| Group created, bot added, test message received | |
+| Bot username | `@agnidrishtibot` (privacy mode on: in groups it sees only commands addressed to it) |
+| Group created, bot added, test message received | Yes. Group "Range Staff" (basic group, chat id in `.env`); the test `sendMessage` succeeded on 2026-10-03. If the group is ever upgraded to a supergroup, the id changes. |
 | `.env` present on (laptop names) | |
 
 ### FIRMS coverage and source choice
