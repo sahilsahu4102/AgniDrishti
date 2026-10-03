@@ -206,7 +206,12 @@ Load time: the first version drew one folium marker per alert and took 66 s per 
 - Flush test: with the phone stream (carry-over).
 - Phone camera: stream URL __, fps __, heading __°, field of view __°
 - Pyronear: `yolo11s_rapid-raccoon_v8.1.0/best.pt`. On 3 labelled frames: 3 of 3 detected. On sample clips with the 6-frame rule: 3 of 3 smoke clips → smoke, 9 of 9 no-smoke clips → nosmoke. About 0.7 s per frame on the laptop CPU; no Pi.
-- D-Fire status: training on Kaggle (team lead), started 3 Oct.
+- D-Fire status: done 3 Oct on Kaggle (YOLO11n, 640 px, 30 epochs, 76 min).
+  - Test split (4,291 images, 5,166 boxes): **mAP50 smoke 0.802, fire 0.682, all 0.742** (precision 0.742, recall 0.674).
+  - The class ids are right: the test set has more fire boxes than smoke boxes (2,868 vs 2,298), as in D-Fire.
+  - Weights are at `data/models/dfire_yolo11n_best.pt`. The download arrived as `.zip`, which is the checkpoint itself (a `.pt` is a zip archive), so it was copied to `.pt` unchanged.
+  - About 45 ms per photo on the laptop CPU.
+  - On the 3 distant tower frames at conf 0.40 it boxed 1 (smoke 0.61). That's expected for a close-range photo model; distant plumes are the Pyronear camera model's job.
 
 ### Changes to thresholds and spec
 
@@ -225,4 +230,4 @@ Load time: the first version drew one folium marker per alert and took 66 s per 
 | Phone camera (IP Webcam) streams to the laptop; flush test; heading and field of view recorded | Team lead | 4 Oct |
 | Dashboard screenshot saved as `docs/img/phase-1-dashboard.png` (open http://localhost:8501) | Team lead | 4 Oct |
 | Both labellers read the labelling guide and label 3 practice alerts together | Product + pitch | 4 Oct |
-| D-Fire weights saved to `data/models/dfire_yolo11n_best.pt`, with their test mAP | Team lead | 5 Oct |
+| D-Fire weights saved to `data/models/dfire_yolo11n_best.pt`, with their test mAP | Team lead | **Done 3 Oct** (mAP50 0.742) |

@@ -143,7 +143,7 @@ out;
 
 - Pyronear weights file: `data/models/pyronear/yolo11s_rapid-raccoon_v8.1.0/best.pt`. Its only class is named `item`, so count boxes rather than filtering on "smoke".
 - Smoke check (task 0.17): at imgsz 1024, conf 0.2, iou 0.01, 3 of 3 labelled Pyro-SDIS frames got one box each on the labelled plume, with confidences 0.75, 0.26 and 0.47 (box centres within 0.03 of the labels). No box on the overcast sky. About 0.7 s per frame on the laptop CPU (ultralytics 8.x in `.venv`). Evidence: `docs/img/phase-0-smoke-check.jpg` (Pyro-SDIS, Apache-2.0).
-- D-Fire run (where, epochs so far, mAP50 for smoke and fire): notebook `train_dfire.ipynb` is ready for Kaggle. It uses the Kaggle copy `sayedgamal99/smoke-fire-detection-yolo` and trains YOLO11n at 640 px for 30 epochs. Not run yet.
+- D-Fire run (where, epochs so far, mAP50 for smoke and fire): notebook `train_dfire.ipynb` is ready for Kaggle. It uses the Kaggle copy `sayedgamal99/smoke-fire-detection-yolo` and trains YOLO11n at 640 px for 30 epochs. Run on 3 Oct (76 min): test mAP50 smoke 0.802, fire 0.682; details in the Phase 1 report.
 - Clips: smoke 10 (6.0 min); negatives 74 (43.3 min: 25.5 HPWREN, 17.8 Commons).
   - The first Commons pass saved Wikimedia error pages as video files, because the script didn't check responses. 38 files were re-fetched; 5 still failed and were dropped. Every remaining file was verified to decode to its last frame. One HPWREN video was corrupt and skipped.
   - 6-frame check (conf 0.2, smoke if ≥ 4 of 6): `smoke` on 3 of 3 sampled smoke clips (6, 5 and 4 of 6 frames). `nosmoke` on 9 sampled no-smoke clips: 0 of 6 frames on 7 of them (6 Commons cloud time-lapses, 1 HPWREN), 1 of 6 on one HPWREN clip. The full 30-minute test is Phase 3.
@@ -189,6 +189,6 @@ Other confirmed facts for the pitch:
 | Item | Owner | Due |
 | --- | --- | --- |
 | Phone camera (IP-camera app) streams to the laptop | Hardware + bot | Phase 1, 4 Oct |
-| D-Fire training on Kaggle finishes; `dfire_yolo11n_best.pt` saved to `data/models/` with its test mAP recorded | Vision (team lead) | Phase 2, 5 Oct |
+| D-Fire training on Kaggle finishes; `dfire_yolo11n_best.pt` saved to `data/models/` with its test mAP recorded | Vision (team lead) | **Done 3 Oct** |
 | Teammates added as GitHub collaborators; Owners table filled | Team lead | 4 Oct |
 | Five pitch slides (use 1,952, not 1,957) | Product + pitch | Phase 4, 8 Oct |
