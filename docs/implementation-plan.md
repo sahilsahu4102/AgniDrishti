@@ -18,6 +18,7 @@ Like the spec, these docs contain no project code, because the event may restric
 - **Submission:** code and demo are submitted by 9 Oct 2026, and pre-written code is allowed. The "hours" in the phase docs map to the dates above.
 - **Camera:** an Android phone is the camera (§11.2 option C). There is no Pi and no servo, so skip the servo tasks. The node checks only alerts inside the phone's field of view, and inference runs on the laptop.
 - **Window B:** uses NOAA-20, because S-NPP had no data from 28 Apr to early June 2026.
+- **Dashboard:** a custom page served by FastAPI (`api.py` plus `web/`) replaces the spec's Streamlit dashboard, which was the team lead's choice. Its visual direction is the "Toposheet" world, recorded in `PRODUCT.md` and `.impeccable/surfaces/web-index-html.md`. It updates itself every 3 s, so the four live demo moments need no refresh, and it already includes the planned-burn form.
 
 Supporting document: [labelling-guide.md](labelling-guide.md), finished in Phase 1 and used in Phases 2–3.
 

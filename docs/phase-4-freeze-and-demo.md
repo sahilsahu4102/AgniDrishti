@@ -37,12 +37,11 @@ This is a draft. Replace the suggested commands with the real ones during rehear
 
    Without this reset, the demo alert's id already has an outcome and a CAP file. `/todo` would skip it and `send` wouldn't push it.
 3. **Start the services in this order**, one terminal each (suggested commands):
-   1. `uvicorn api:app --host 0.0.0.0 --port 8000`
+   1. `uvicorn api:app --host 0.0.0.0 --port 8000`. This serves both the camera API and the dashboard at http://localhost:8000.
    2. `python live.py`
    3. `python bot.py`
-   4. `streamlit run app.py`
-   5. On the Pi: `python node.py`
-4. **Dashboard:** open the Window A replay with the tier filter on DISPATCH + VERIFY.
+   4. `python node.py`, with the phone camera stream as `CAMERA_SOURCE`.
+4. **Dashboard:** open http://localhost:8000 with the tier filter on DISPATCH + VERIFY. Live changes appear by themselves; nothing needs refreshing.
 5. **Camera:** have the smoke video ready on the monitor, in the direction of the demo point (§13).
 6. **Phones:**
    - Judges join "Range staff" through the invite-link QR code on the slides.
@@ -59,7 +58,7 @@ This is a draft. Replace the suggested commands with the real ones during rehear
 | 1:00–2:15 | Toggle LOG on and off in the dashboard; read 2–3 reasons aloud | Farmland pixel, planned burn, recurring cell |
 | 2:15 | Append `demo_row.csv` to `data/live.csv` | VERIFY within 10 s |
 | 2:15–3:30 | Open `data/cap_<id>.xml` in the browser once it appears | The servo turns, the node posts `smoke`, the alert goes DISPATCH and the judges' phones buzz |
-| 3:30–4:15 | The field teammate sends a photo and taps "Real forest fire"; press Refresh | Next pass: p 1.0, red, with "image check: fire" first |
+| 3:30–4:15 | The field teammate sends a photo and taps "Real forest fire" | Within about 13 s, the dashboard's live strip announces the field report, and the alert shows p 1.0 with "Field: real forest fire" |
 | 4:15–5:00 | Metrics slide, then the ask | |
 
 ### If something fails on stage (§18)

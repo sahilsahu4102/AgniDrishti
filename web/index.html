@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgniDrishti · Fire alert sheet, Uttarakhand</title>
+<meta name="description" content="AgniDrishti ranks satellite fire alerts for Uttarakhand into DISPATCH, VERIFY and LOG, with the reasons for every rank.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/noto-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" class="defs" aria-hidden="true" focusable="false">
+  <symbol id="sym-DISPATCH" viewBox="0 0 16 16"><path d="M8 1.6 15 13.8H1Z" fill="var(--dispatch)" stroke="var(--paper)" stroke-width="1" stroke-linejoin="round"/></symbol>
+  <symbol id="sym-VERIFY" viewBox="0 0 16 16"><path d="M8 2.2 13.8 8 8 13.8 2.2 8Z" fill="var(--paper)" stroke="var(--verify)" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+  <symbol id="sym-LOG" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3.6" fill="var(--log)"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 16 16"><path d="M3.5 14.5V2M3.5 2.6h8.2l-1.9 2.9 1.9 2.9H3.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></symbol>
+</svg>
+
+<div class="app">
+  <header class="titleblock">
+    <div class="title">
+      <h1>AgniDrishti</h1>
+      <p class="sheet-name">Fire alert sheet · Uttarakhand</p>
+    </div>
+    <dl class="tally" aria-label="Alerts shown, by tier">
+      <div class="tally-item"><dt><svg class="sym" aria-hidden="true"><use href="#sym-DISPATCH"/></svg>DISPATCH</dt><dd id="n-DISPATCH">–</dd></div>
+      <div class="tally-item"><dt><svg class="sym" aria-hidden="true"><use href="#sym-VERIFY"/></svg>VERIFY</dt><dd id="n-VERIFY">–</dd></div>
+      <div class="tally-item"><dt><svg class="sym" aria-hidden="true"><use href="#sym-LOG"/></svg>LOG</dt><dd id="n-LOG">–</dd></div>
+      <div class="tally-item tally-all"><dt>Alerts in</dt><dd id="n-all">–</dd></div>
+    </dl>
+    <p class="status" id="status" role="status"><span class="pulse" aria-hidden="true"></span><span id="status-text">Connecting…</span></p>
+    <button class="btn" id="burn-open" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Register burn</button>
+  </header>
+
+  <div class="filters" role="search">
+    <fieldset class="tiers">
+      <legend class="sr-only">Tiers on the sheet</legend>
+      <label class="chip"><input type="checkbox" name="tier" value="DISPATCH" checked><svg class="sym" aria-hidden="true"><use href="#sym-DISPATCH"/></svg>DISPATCH</label>
+      <label class="chip"><input type="checkbox" name="tier" value="VERIFY" checked><svg class="sym" aria-hidden="true"><use href="#sym-VERIFY"/></svg>VERIFY</label>
+      <label class="chip"><input type="checkbox" name="tier" value="LOG"><svg class="sym" aria-hidden="true"><use href="#sym-LOG"/></svg>LOG</label>
+    </fieldset>
+    <label class="field field-select"><span>Data</span>
+      <select id="window">
+        <option value="all">All windows</option>
+        <option value="A">Window A · Nov 2025 – Jan 2026 · S-NPP</option>
+        <option value="B">Window B · Apr – May 2026 · NOAA-20</option>
+        <option value="live">Live alerts</option>
+      </select>
+    </label>
+    <label class="field field-search"><span class="sr-only">Find a village or alert id</span>
+      <input id="q" type="search" placeholder="Find village or alert id" autocomplete="off" spellcheck="false">
+    </label>
+    <p class="source">Replay of public NASA FIRMS data. Scores use the starting weights; tuning is pending.</p>
+  </div>
+
+  <main class="layout">
+    <section class="margin" aria-labelledby="queue-title">
+      <h2 id="queue-title" class="sr-only">Ranked alerts</h2>
+      <div class="live-strip" id="live-strip" aria-live="polite" hidden></div>
+      <ol class="queue" id="queue" aria-busy="true"><li class="queue-note">Loading alerts…</li></ol>
+      <button class="more" id="more" type="button" hidden></button>
+    </section>
+
+    <section class="sheet" aria-label="Map of alerts">
+      <div class="frame">
+        <div id="map"></div>
+        <div class="ticks" id="ticks" aria-hidden="true"></div>
+      </div>
+
+      <aside class="dock" id="evidence" aria-labelledby="ev-title" hidden></aside>
+
+      <aside class="dock" id="burnpanel" aria-labelledby="burn-title" hidden>
+        <header class="dock-head">
+          <h2 id="burn-title">Register a planned burn</h2>
+          <button class="icon-btn" type="button" data-close aria-label="Close the burn register"><svg class="i"><use href="#i-close"/></svg></button>
+        </header>
+        <form id="burnform" class="form" novalidate>
+          <p class="hint">Click the map to set the centre, or type it in.</p>
+          <div class="row2">
+            <label class="field"><span>Latitude</span><input name="lat" type="number" step="0.0001" min="28.7" max="31.5" required inputmode="decimal"></label>
+            <label class="field"><span>Longitude</span><input name="lon" type="number" step="0.0001" min="77.5" max="81.1" required inputmode="decimal"></label>
+          </div>
+          <label class="field"><span>Radius, km</span><input name="r_km" type="number" step="0.1" min="0.1" max="50" value="1" required inputmode="decimal"></label>
+          <div class="row2">
+            <label class="field"><span>Start, UTC</span><input name="start" type="datetime-local" required></label>
+            <label class="field"><span>End, UTC</span><input name="end" type="datetime-local" required></label>
+          </div>
+          <label class="field"><span>Note</span><input name="note" type="text" maxlength="200" placeholder="Fire-line burning, compartment 12"></label>
+          <p class="hint">Live alerts pick it up on the next scoring pass, within about 10 seconds. Replay alerts change when the replay is re-scored.</p>
+          <div class="actions">
+            <button class="btn btn-solid" type="submit">Add to register</button>
+            <button class="btn btn-quiet" type="button" data-close>Cancel</button>
+          </div>
+          <p class="form-msg" id="burn-msg" role="status"></p>
+        </form>
+      </aside>
+    </section>
+  </main>
+</div>
+
+<svg class="leader" id="leader" aria-hidden="true">
+  <path class="leader-line" d=""/>
+  <g class="leader-tag"><rect rx="2"/><text></text></g>
+</svg>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

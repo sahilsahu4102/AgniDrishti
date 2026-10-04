@@ -41,9 +41,19 @@ def cells():
     print(f'cells: {len(c)} cells from {len(h)} history detections, largest n {c.n.max()} -> {config.CELLS.name}')
 
 
+def outline(poly):
+    """Simplified state outline for the dashboard map's neatline."""
+    shape_ = shapely.set_precision(shapely.simplify(poly, 0.002), 1e-4)
+    path = config.ROOT / 'web' / 'uttarakhand.geojson'
+    path.write_text(json.dumps({'type': 'Feature', 'properties': {'name': 'Uttarakhand'},
+                                'geometry': shapely.geometry.mapping(shape_)}))
+    print(f'outline: {shapely.get_num_coordinates(shape_)} points -> {path.name} ({path.stat().st_size // 1024} KB)')
+
+
 if __name__ == '__main__':
     poly = state()
     for name in config.WINDOWS:
         clip(name, poly)
     villages()
     cells()
+    outline(poly)

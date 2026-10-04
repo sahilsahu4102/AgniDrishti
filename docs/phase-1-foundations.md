@@ -191,6 +191,8 @@ The self-test covers each p rule with its reason text; the `seen` cap; clipping 
 
 ### Dashboard
 
+Superseded on 3 Oct. The team lead chose a custom FastAPI-served page (`api.py` plus `web/`), built with the impeccable design workflow, and `app.py` was removed. What follows records the Gate 1 check of the original Streamlit shell.
+
 `app.py` (Streamlit + folium), checked with Streamlit's `AppTest`:
 
 - no exceptions;

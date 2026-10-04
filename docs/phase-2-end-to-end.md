@@ -53,8 +53,8 @@
 
 | Task | Done when |
 | --- | --- |
-| Dashboard per §12.4: tier filter defaulting to DISPATCH + VERIFY, red/orange/grey markers, popups, a sorted table, and replay plus live data through `store`. A Refresh button is enough. | Screenshot saved. |
-| Planned-burn form (R6): lat, lon, radius in km, start and end in UTC, and a note. It appends to `burns.csv` with id `B<unix time>`. Reject lat/lon outside the box, an `r_km` ≤ 0, or an end ≤ start. | Run 4 passes. |
+| Dashboard per §12.4. **Built early on 3 Oct** as the FastAPI page (`api.py` plus `web/`). It polls `/api/live` every 3 s, so new alerts, tier flips, outcomes and sent markers appear with no refresh. | Its live markers behave correctly during Runs 2–4. |
+| Planned-burn form (R6). **Built 3 Oct** into the dashboard (`POST /api/burns`). Clicking the map sets the centre, and the server rejects lat/lon outside the box, an `r_km` ≤ 0 or > 50, or an end ≤ start. | Run 4 passes. |
 | Draw the 80-alert sample as described in [labelling-guide.md](labelling-guide.md): fixed seed, halves assigned before anyone labels. | `data/sample.csv` committed. |
 | Label the first 40. Two labellers each, blind to tier. | 40 ids with two first-pass labels each. |
 

@@ -12,6 +12,3 @@ huggingface_hub
 python-telegram-bot
 fastapi
 uvicorn
-streamlit
-folium
-streamlit-folium

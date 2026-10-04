@@ -1,0 +1,131 @@
+{
+  "title": "Choose the visual world for the AgniDrishti dashboard",
+  "question": "The roll assigned Burans & Slate. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Burans & Slate",
+      "kicker": "THE ROLL",
+      "lineage": "Garhwal and Kumaon hill materials in fire season",
+      "thesis": "Each alert wears the colour of what burns: burans red to send, chir-pine ochre to check, slate to log.",
+      "palette": ["#1F3B2D", "#B3203A", "#C17A1B", "#6B7780", "#EEF0EC"],
+      "materials": ["slate roof stone", "deodar timber", "burans petals", "chir-pine needle litter"],
+      "viewport": "Deodar-green rail with live counts; ranked queue with reasons inline; terrain map; the selected alert's evidence and lifecycle below.",
+      "risk": "Reads as a regional theme instead of a tool if the palette is applied timidly or as decoration.",
+      "raised": [
+        {"from": "challenger-console", "raise": "Panels persist: picking an alert swaps the detail panel's contents, never the layout."},
+        {"from": "challenger-labanotation", "raise": "Each alert's life (injected, VERIFY, smoke, DISPATCH, sent) is a strip whose segment lengths are real seconds."},
+        {"from": "challenger-zone-sheets", "raise": "Every neutral comes from one 11-step slate ramp; no stray greys."},
+        {"from": "challenger-feed", "raise": "J and K step through the queue with the next alert's detail already loaded."},
+        {"from": "challenger-zoo-map", "raise": "Tier colour is flat and unmodulated everywhere: no gradients, no glow."}
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Toposheet",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Survey of India 1:50,000 topographic sheets",
+      "thesis": "Alerts plotted the way foresters read the land: contours, compartments, grid references.",
+      "palette": ["#F4F1E6", "#9C5B2E", "#CFE3B5", "#3C78B4", "#C8102E"],
+      "materials": ["printed map paper", "contour lines", "grid references"],
+      "viewport": "A toposheet-styled terrain map leads; the ranked queue sits in the sheet's margin like its legend.",
+      "risk": "Familiar: map-led ops dashboards are where most runs land, and it pulls toward map-first, which you ruled out."
+    },
+    {
+      "id": "challenger-gate-board",
+      "label": "Gate board",
+      "verdict": "competitive",
+      "lineage": "airport gate boards and Indian Railways departure boards",
+      "thesis": "The alert queue as a live departure board: rows re-rank in place and changes stay lit.",
+      "palette": ["#121417", "#F4F4F0", "#E0B000", "#C8102E"],
+      "materials": ["board rows", "tabular figures"],
+      "viewport": "A full-width ranked board by tier, then p; a selected row opens a segmented pass with its reasons.",
+      "case": "Fuses cleanly: the ranking is the product and the live re-rank is the demo moment; loses on audience, since a gate board isn't the forest office.",
+      "risk": "Reads as transport signage, and board density can bury the reasons.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-boarding-pass-and-gate-board-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/vernacular-ephemera-boarding-pass-and-gate-board.webp"
+    },
+    {
+      "id": "challenger-console",
+      "label": "Graphite console",
+      "verdict": "declined",
+      "lineage": "dark developer consoles",
+      "thesis": "A dark, panel-tiled work surface divided by hairline seams.",
+      "palette": ["#1C1F24", "#2A2F36", "#7EC8E3", "#E06C75"],
+      "materials": ["graphite panels", "hairline seams"],
+      "viewport": "Persistent panels: queue, map, detail, log.",
+      "case": "Fuses poorly: a coder's console isn't a forest office, and it's no clearer.",
+      "kept": "Panels persist; selecting changes contents, not the layout.",
+      "risk": "Reads as developer tooling and drifts toward the glowing control-room look.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-dark-first-developer-console-hero.webp"
+    },
+    {
+      "id": "challenger-labanotation",
+      "label": "Dance score",
+      "verdict": "declined",
+      "lineage": "Labanotation movement scores",
+      "thesis": "Time runs up a central staff, and length is exact duration.",
+      "palette": ["#FFFFFF", "#111111", "#BDBDBD"],
+      "materials": ["score paper", "shaded symbol blocks"],
+      "viewport": "Alerts as blocks on a vertical time staff, with columns by tier.",
+      "case": "Fuses poorly: officers don't read scores, and clarity drops.",
+      "kept": "A lifecycle strip with segment lengths in real seconds.",
+      "risk": "Opaque to anyone untrained.",
+      "hero": "https://impeccable.style/worlds/cards/notation-diagram-systems-labanotation-hero.webp"
+    },
+    {
+      "id": "challenger-zone-sheets",
+      "label": "Exposure record",
+      "verdict": "declined",
+      "lineage": "darkroom exposure record cards",
+      "thesis": "A neutral zone ramp where hatch density is load and crossing hatches flag conflict.",
+      "palette": ["#F2F2F0", "#8A8A88", "#2B2B2B", "#C2185B"],
+      "materials": ["translucent sheets", "hatch density"],
+      "viewport": "Stacked sheets for queue, map and detail, with conflicting signals cross-hatched.",
+      "case": "Fuses poorly: darkroom notation is foreign to foresters.",
+      "kept": "All neutrals from one 11-step slate ramp.",
+      "risk": "Hatching adds noise to a dense table.",
+      "hero": "https://impeccable.style/worlds/cards/operate-b-exposure-record-zone-sheets-hero.webp"
+    },
+    {
+      "id": "challenger-feed",
+      "label": "One alert per screen",
+      "verdict": "declined",
+      "lineage": "vertical video feeds",
+      "thesis": "One alert fills the screen, and the next is one flick away.",
+      "palette": ["#000000", "#FFFFFF", "#C8102E"],
+      "materials": ["full-bleed media", "action rail"],
+      "viewport": "A single alert full screen, reasons low, actions on a right rail.",
+      "case": "Fuses poorly: it hides the ranked queue, which you ruled out.",
+      "kept": "Keyboard stepping with the next alert preloaded.",
+      "risk": "No overview of the queue.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-vertical-video-feed-surface-hero.webp"
+    },
+    {
+      "id": "challenger-zoo-map",
+      "label": "Guide map",
+      "verdict": "declined",
+      "lineage": "zoo and gardens guide maps",
+      "thesis": "Areas as flat colour lobes, with capsules marking what's live.",
+      "palette": ["#8ED462", "#F5F1E4", "#2C2E2A", "#FF705D", "#F5E211"],
+      "materials": ["flat colour lobes", "capsule labels"],
+      "viewport": "The division drawn as swelling lobes, with alert capsules on the coastline.",
+      "case": "Fuses poorly: playful flatness undercuts emergency triage.",
+      "kept": "Flat, unmodulated tier colour; no gradients or glow.",
+      "risk": "Reads as leisure, not fire work.",
+      "hero": "https://impeccable.style/worlds/cards/aww2-zoo-gardens-guide-map-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "An operations dashboard done right: neutral shell, count strip, map and table side by side.",
+    "palette": ["#0F172A", "#F8FAFC", "#DC2626", "#F59E0B", "#94A3B8"],
+    "materials": ["neutral panels", "data table"],
+    "viewport": "Top bar with counts; map on the left, sortable table on the right, a detail drawer.",
+    "risk": "Indistinguishable from any GIS operations dashboard, by design."
+  },
+  "steer": true
+}

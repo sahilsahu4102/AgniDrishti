@@ -21,39 +21,54 @@ def tier(p, r):
     return 'VERIFY' if p >= c.VERIFY_P else 'LOG'
 
 
+def ledger(a):
+    """Each reason that moves p, with its effect, in §10.2 order."""
+    rows, burn = [], a['burn'] if isinstance(a['burn'], str) else ''  # an empty cell reads back as NaN
+    if a['veg'] < c.VEG_MIN:
+        rows.append((f"pixel only {a['veg']:.0%} vegetation", -c.VEG_PENALTY))
+    if a['farm'] > c.FARM_MAX:
+        rows.append((f"pixel {a['farm']:.0%} farmland or built-up", -c.FARM_PENALTY))
+    if burn:
+        rows.append((f'inside planned burn {burn}', -c.BURN_PENALTY))
+    if a['recur'] >= c.RECUR_MIN:
+        rows.append((f"same cell fired {a['recur']} times since 2023", -c.RECUR_PENALTY))
+    if a['seen'] > 0:
+        rows.append((f"seen {a['seen'] + 1} times in 12 h", min(c.SEEN_STEP * a['seen'], c.SEEN_CAP)))
+    if str(a['confidence']).lower().startswith('h'):
+        rows.append(('high confidence', c.CONF_BONUS))
+    if a['frp'] >= c.FRP_MIN:
+        rows.append((f"FRP {a['frp']:.0f} MW", c.FRP_BONUS))
+    return rows
+
+
+def risk(a):
+    """Each risk point with its reason (§10.3)."""
+    v = a['village_km']
+    parts = [(f'village within {c.VILLAGE_NEAR_KM} km', 2)] if v < c.VILLAGE_NEAR_KM else \
+            [(f'village within {c.VILLAGE_KM} km', 1)] if v < c.VILLAGE_KM else []
+    for hit, text in [(a['slope'] > c.SLOPE_STEEP, f'slope over {c.SLOPE_STEEP}°'), (a['tree'] > c.TREE_DENSE, 'dense tree cover'),
+                      (a['wind'] > c.WIND_STRONG, f'wind over {c.WIND_STRONG} km/h'), (a['rh'] < c.RH_DRY, f'humidity under {c.RH_DRY}%'),
+                      (a['seen'] >= c.SEEN_EVENT, 'event of 3+ pixels')]:
+        if hit:
+            parts.append((text, 1))
+    return parts
+
+
+def image_p(p, image):
+    """Image outcomes override the summed p (§10.2)."""
+    return {'smoke': max(p, c.SMOKE_P), 'nosmoke': max(0.0, p - c.NOSMOKE_DROP), 'fire': c.FIRE_P}.get(image, c.NOFIRE_P)
+
+
 def score_one(a, image=None):
     """p (0-1), r (0-7), tier and reasons for one alert's features (§10.2-10.4)."""
-    p, why = c.P_START, []
-    if a['veg'] < c.VEG_MIN:
-        p -= c.VEG_PENALTY
-        why.append(f"pixel only {a['veg']:.0%} vegetation")
-    if a['farm'] > c.FARM_MAX:
-        p -= c.FARM_PENALTY
-        why.append(f"pixel {a['farm']:.0%} farmland or built-up")
-    if a['burn']:
-        p -= c.BURN_PENALTY
-        why.append(f"inside planned burn {a['burn']}")
-    if a['recur'] >= c.RECUR_MIN:
-        p -= c.RECUR_PENALTY
-        why.append(f"same cell fired {a['recur']} times since 2023")
-    if a['seen'] > 0:
-        p += min(c.SEEN_STEP * a['seen'], c.SEEN_CAP)
-        why.append(f"seen {a['seen'] + 1} times in 12 h")
-    if str(a['confidence']).lower().startswith('h'):
-        p += c.CONF_BONUS
-        why.append('high confidence')
-    if a['frp'] >= c.FRP_MIN:
-        p += c.FRP_BONUS
-        why.append(f"FRP {a['frp']:.0f} MW")
-    p = min(1.0, max(0.0, p))
-    if image:  # image outcomes override the sum (§10.2)
-        p = {'smoke': max(p, c.SMOKE_P), 'nosmoke': max(0.0, p - c.NOSMOKE_DROP), 'fire': c.FIRE_P}.get(image, c.NOFIRE_P)
+    rows = ledger(a)
+    p = min(1.0, max(0.0, c.P_START + sum(d for _, d in rows)))
+    why = [t for t, _ in rows]
+    if image:
+        p = image_p(p, image)
         why.insert(0, f'image check: {image}')
     p = round(p, 2)  # 0.5 + 0.1 + 0.3 is 0.8999999999999999 in floating point
-
-    r = 2 if a['village_km'] < c.VILLAGE_NEAR_KM else 1 if a['village_km'] < c.VILLAGE_KM else 0
-    r += (a['slope'] > c.SLOPE_STEEP) + (a['tree'] > c.TREE_DENSE) + (a['wind'] > c.WIND_STRONG)
-    r += (a['rh'] < c.RH_DRY) + (a['seen'] >= c.SEEN_EVENT)
+    r = sum(n for _, n in risk(a))
     weather = 'weather unavailable' if math.isnan(a['wind']) else f"wind {a['wind']:.0f} km/h, RH {a['rh']:.0f}%"
     why.append(f"{a['village_km']:.1f} km from {a['village_name']}, slope {a['slope']:.0f}°, {weather}")
     return p, int(r), tier(p, r), '; '.join(why)

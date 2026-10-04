@@ -16,6 +16,11 @@ runs/
 __pycache__/
 .venv/
 
+# impeccable working files (the surface brief and design records stay tracked)
+.impeccable/questions/
+.impeccable/review/
+.impeccable/brief-body.md
+
 # local tool files (graphify, agent settings)
 .agents/
 .claude/
