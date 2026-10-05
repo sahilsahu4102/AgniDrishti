@@ -34,10 +34,16 @@ def top_conf(model, frame):
     return float(r.boxes.conf.max()) if len(r.boxes) else 0.0
 
 
-def score(confs, t):
-    hits = [x >= t for x in confs]
-    checks = [hits[i:i + c.FRAMES] for i in range(0, len(hits) - c.FRAMES + 1, c.FRAMES)]
-    return len(checks), sum(sum(ch) >= c.FRAMES_NEEDED for ch in checks)
+def score(confs, t, luma=None):
+    """(checks judged, confirmations, checks skipped as too dark), mirroring node.check."""
+    judged = conf = dark = 0
+    for i in range(0, len(confs) - c.FRAMES + 1, c.FRAMES):
+        if luma is not None and sorted(luma[i:i + c.FRAMES])[c.FRAMES // 2] < c.DARK_LUMA:
+            dark += 1
+            continue
+        judged += 1
+        conf += sum(x >= t for x in confs[i:i + c.FRAMES]) >= c.FRAMES_NEEDED
+    return judged, conf, dark
 
 
 if __name__ == '__main__':
@@ -56,17 +62,18 @@ if __name__ == '__main__':
             with open(cache, 'a', newline='', encoding='utf-8') as f:
                 csv.writer(f).writerow([kind, m['file'], m['seconds'], ' '.join(f'{v:.3f}' for v in confs)])
             print(f"{kind:<13} {m['file'][:58]:<58} {len(confs):>3} frames, top conf {max(confs, default=0):.2f}", flush=True)
-        clips.append({'kind': kind, 'file': m['file'], 'seconds': float(m['seconds']), 'confs': confs})
+        luma = [float(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY).mean()) for f in frames(c.DATA / 'clips' / m['file'])]  # cheap, not cached
+        clips.append({'kind': kind, 'file': m['file'], 'seconds': float(m['seconds']), 'confs': confs, 'luma': luma})
     rows = []
     for t in THRESHOLDS:
         row = {'conf': t}
         for kind in ('smoke', 'negative', 'visible smoke'):
             g = [x for x in clips if x['kind'] == kind]
-            checks, conf = map(sum, zip(*[score(x['confs'], t) for x in g])) if g else (0, 0)
-            row[f'{kind} checks'], row[f'{kind} confirmed'] = checks, conf
+            judged, conf, dark = map(sum, zip(*[score(x['confs'], t, x['luma']) for x in g])) if g else (0, 0, 0)
+            row[f'{kind} checks'], row[f'{kind} confirmed'], row[f'{kind} too dark'] = judged, conf, dark
         rows.append(row)
     df = pd.DataFrame(rows)
     df.to_csv(c.DATA / 'camtest.csv', index=False)
     neg_min = sum(x['seconds'] for x in clips if x['kind'] == 'negative') / 60
-    print(f'\nnegatives: {neg_min:.1f} min; current CAMERA_CONF {c.CAMERA_CONF}')
+    print(f'\nnegatives: {neg_min:.1f} min; CAMERA_CONF {c.CAMERA_CONF}, DARK_LUMA {c.DARK_LUMA}')
     print(df.to_string(index=False))

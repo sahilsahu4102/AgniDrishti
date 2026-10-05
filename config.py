@@ -79,7 +79,12 @@ NODE_RANGE_KM = 10
 CAMERA_SOURCE = os.getenv('CAMERA_SOURCE', '0')  # phone IP Webcam URL (http://<ip>:8080/video), a video file, or a webcam index
 CAMERA_SOURCE = int(CAMERA_SOURCE) if CAMERA_SOURCE.isdigit() else CAMERA_SOURCE
 CAMERA_MODEL = DATA / 'models/pyronear/yolo11s_rapid-raccoon_v8.1.0/best.pt'
-CAMERA_IMGSZ, CAMERA_CONF, CAMERA_IOU = 1024, 0.2, 0.01  # model card values; Phase 3 locks conf
+# Locked 6 Oct 2026 by camtest.py over 10 smoke clips and 42.6 min of no-smoke footage (thresholds chosen on that same set):
+# conf 0.20 (model card) gave 25/29 smoke checks and 10 false confirmations; 0.30 plus the darkness guard gives 22/29
+# (9 of 10 clips still caught) and 2 false confirmations. The guard: a 6-frame check whose median brightness is under
+# DARK_LUMA gets no verdict (night lights fooled the model), so the alert stays in VERIFY for a photo.
+CAMERA_IMGSZ, CAMERA_CONF, CAMERA_IOU = 1024, 0.30, 0.01
+DARK_LUMA = 30  # 0-255 grey level
 FRAMES, FRAME_GAP_S, FRAMES_NEEDED = 6, 2, 4
 
 # Field photo bot (§11.3)

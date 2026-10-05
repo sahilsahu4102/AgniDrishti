@@ -56,7 +56,7 @@ This is §15.3 Gate 3, minus the rehearsal items that moved to Gate 4 (R4).
 
 - [ ] All 80 alerts labelled by two people; first-pass agreement recorded. Product, Geo.
 - [ ] Weights tuned on one half; metrics computed on the other. Scoring.
-- [ ] Camera false-alarm test done (30 minutes of cloud, fog and haze). Vision.
+- [x] Camera false-alarm test done (30 minutes of cloud, fog and haze). Vision. 42.6 min; thresholds locked 6 Oct.
 - [ ] End-to-end latency measured. Hardware + bot.
 - [ ] Metrics slide and demo script drafted with the final numbers. Product.
 - [ ] Requirements pinned; `phase-3` tag pushed. Scoring.
@@ -81,7 +81,7 @@ This is §15.3 Gate 3, minus the rehearsal items that moved to Gate 4 (R4).
 | A | | | | |
 | B | | | | |
 
-- dNBR hints: computed for __ / 80; __ of them ≥ 0.10
+- dNBR hints: computed for 68 / 80 by `python s2.py` on 6 Oct; 29 of them ≥ 0.10 (15 in Window A, 14 in Window B). The other 12 had no scene under 20% cloud within 20 days on one side. Values are in the `dnbr` column of `data/labels_template.csv`. Before and after chips (true colour and SWIR) are on the blind sheet `data/labelling/index.html`, which shows no tier, p or reasons.
 
 ### Tuning (tune half only)
 
@@ -117,9 +117,30 @@ Cross-check: Window A outside-forest share __% vs the department's 39%.
 
 ### Camera
 
-- Source (camera at monitor / file) __, minutes __, checks __, false confirmations __, frames with a box __
-- Smoke clips confirmed: __ / 10
-- Locked values: confidence __, frames needed __ of 6
+Run on 6 Oct with `python camtest.py`. Results are in `data/camtest.csv`, with per-frame confidences in `data/camtest_frames.csv`.
+
+- **Source:** files fed directly, not a camera pointed at a monitor. Frames are 2 s apart in clip time, grouped into the node's 6-frame checks.
+- **Footage:** 42.6 min of no-smoke clips (39 HPWREN before-ignition, 35 Wikimedia Commons cloud, fog and haze) and 10 HPWREN smoke clips.
+- **Excluded clip:** `hpwren_20201208_FIRE_om-s-mobo-c_pre.mp4` is labelled before-ignition but shows a plainly visible plume from another fire, so it's scored separately as "visible smoke" (confirmed 3 of 3, which is correct).
+
+| Setting | Smoke checks confirmed | Smoke clips caught | False confirmations (no-smoke footage) |
+| --- | --- | --- | --- |
+| conf 0.20, no guard (model card) | 25 / 29 | 9 / 10 | 10 in 182 checks |
+| conf 0.30, no guard | 22 / 29 | 9 / 10 | 6 in 182 checks |
+| **conf 0.30 + darkness guard (locked)** | **22 / 29** | **9 / 10** | **2 in 172 checks** (10 night checks given no verdict) |
+| conf 0.40 + guard | 12 / 29 | — | 0 |
+
+**What the false alarms were** (checked by eye):
+- Night-time house lights (Franklin Fire camera, frame brightness about 21 of 255). No threshold fixed these; the darkness guard did.
+- A hazy horizon (2019-10-06 camera).
+- Jena at dusk (Commons).
+
+**Locked values:**
+- confidence 0.30;
+- 4 of 6 frames;
+- no verdict when a check's median brightness is under 30 (`DARK_LUMA`). The alert stays in VERIFY for a photo, and the node retries it after 10 min.
+
+**Caveat:** the thresholds were chosen on the same clips they're scored on, with no held-out footage. On the slide, say "2 false confirmations in 43 minutes of test footage, at the chosen settings". Never say "0 false alarms".
 
 ### Latency (3 runs)
 
