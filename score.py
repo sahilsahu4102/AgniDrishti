@@ -74,18 +74,20 @@ def score_one(a, image=None):
     return p, int(r), tier(p, r), '; '.join(why)
 
 
-def score_csv(paths, out):
+def score_csv(paths, out, log=True):
     df = pd.concat([pd.read_csv(p) for p in paths], ignore_index=True)
     if df.empty:
         df.to_csv(out, index=False)
-        print(f'{out.name}: no alerts')
+        if log:
+            print(f'{out.name}: no alerts')
         return df
     df = check.features(df)
     img = outcomes()
     df['p'], df['r'], df['tier'], df['why'] = zip(*[score_one(a, img.get(a['id'])) for a in df.to_dict('records')])
     df.to_csv(out, index=False)
     counts = df.tier.value_counts()
-    print(f"{out.name}: {len(df)} alerts | DISPATCH {counts.get('DISPATCH', 0)} | VERIFY {counts.get('VERIFY', 0)} | LOG {counts.get('LOG', 0)}")
+    if log:
+        print(f"{out.name}: {len(df)} alerts | DISPATCH {counts.get('DISPATCH', 0)} | VERIFY {counts.get('VERIFY', 0)} | LOG {counts.get('LOG', 0)}")
     return df
 
 

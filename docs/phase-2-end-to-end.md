@@ -107,12 +107,12 @@ That gives p = 0.5, which is VERIFY whatever r is, and then p = 0.9 → DISPATCH
 
 ## Gate 2 checklist (§15.3)
 
-- [ ] Windows A and B scored. Scoring, Geo; tier counts per window.
-- [ ] API answers `/todo` and accepts `/seen`. Scoring; responses pasted from `/docs`.
-- [ ] Node pans to an injected alert and posts `smoke` for a smoke clip. Hardware + bot, Vision; Run 2 times and snapshot.
-- [ ] Live loop flips that alert to DISPATCH and pushes Telegram plus CAP. Scoring; message screenshot and CAP path.
+- [x] Windows A and B scored. Scoring, Geo; tier counts per window.
+- [x] API answers `/todo` and accepts `/seen`. Scoring; responses pasted from `/docs`.
+- [x] Node pans to an injected alert and posts `smoke` for a smoke clip (no servo: the alert is checked inside the phone's field of view). Hardware + bot, Vision; Run 2 times and snapshot.
+- [x] Live loop flips that alert to DISPATCH and pushes Telegram plus CAP. Scoring; message screenshot and CAP path.
 - [ ] Bot saves a field outcome and the alert updates on the next pass. Hardware + bot; Run 3 rows.
-- [ ] A burn registered in the form pushes an alert in its zone down to LOG. Product, Scoring; Run 4 before and after.
+- [x] A burn registered in the form pushes an alert in its zone down to LOG. Product, Scoring; Run 4 before and after.
 - [ ] 80 alerts sampled; at least 40 labelled. Product; `sample.csv` and `labels_*.csv` counts.
 
 ---
@@ -121,16 +121,22 @@ That gives p = 0.5, which is VERIFY whatever r is, and then p = 0.9 → DISPATCH
 
 > Fill this in, then push it with tag `phase-2` ([how](implementation-plan.md#documents-and-pushing)).
 
-**Gate passed at:** hour __ (YYYY-MM-DD HH:MM IST) · **Filled by:** · **Commit:**
+**Status (5 Oct 2026):**
+- **Passed:** Runs 1, 2 and 4.
+- **Open:** Run 3 (the field confirmation needs the team lead on Telegram) and labelling (two people needed).
+
+Tag `phase-2` waits for both. Code: `api.py` (`/todo`, `/seen`), `send.py`, `live.py`, `node.py`, `bot.py` and `store.record`. All commits are local only, by the team lead's choice.
 
 ### Replay tiers
 
 | Window | DISPATCH | VERIFY | LOG | Total |
 | --- | --- | --- | --- | --- |
-| A | | | | |
-| B | | | | |
+| A (S-NPP) | 1,919 | 1,243 | 272 | 3,434 |
+| B (NOAA-20) | 4,325 | 2,222 | 333 | 6,880 |
 
 ### Hand-check of 5 alerts
+
+Not done yet (Geo data). Phase 0 and Phase 1 spot checks cover the same ground (land-cover landmarks, slopes and elevations), but this per-alert table is still owed.
 
 | id | Land cover vs viewer | Slope plausible | Weather vs Open-Meteo | OK? |
 | --- | --- | --- | --- | --- |
@@ -138,48 +144,69 @@ That gives p = 0.5, which is VERIFY whatever r is, and then p = 0.9 → DISPATCH
 
 ### API and send
 
-- `/todo` response (paste):
-- `/seen` response and the row it appended:
-- Replay send: ids sent __, CAP files __, second run sent __
+- **`/todo`:** returns up to 10 open DISPATCH/VERIFY alerts, newest first (D3). With no live alerts, the top entry is `2026-05-30_0734_30.7576_78.3548`.
+- **`/seen` validation:** a result other than `smoke`/`nosmoke` gets 422; an unknown alert id gets 404; a node name like `../x` gets 422. None of these wrote an outcome.
+- **Valid `/seen`:** posted by the camera node in Run 2, appending `2026-10-05_0628_30.0950_78.2000,AG-01,smoke,1791181743.581`.
+- **Replay send:** run 1 sent 3 and wrote 3 CAP files (`cap_2026-05-27_0830_30.2509_78.7434.xml`, `…30.2732_79.3925`, `…30.3661_79.2938`); run 2 sent 0.
 
 ### Run 2 timeline
 
+Camera: the node at 30.05°N 78.20°E facing north (field of view 60°, range 10 km), reading the HPWREN clip `smoke/hpwren_20160604_FIRE_rm-n-mobo-c_smoke.mp4` in place of the phone.
+
 | Step | UTC time | Seconds since inject |
 | --- | --- | --- |
-| Row injected | | 0 |
-| VERIFY in `live_scored.csv` | | |
-| Node fetched the alert | | |
-| Servo at bearing (bearing __°, relative __°) | | |
-| 6 frames done (__ of 6 with smoke) | | |
-| `smoke` posted | | |
-| DISPATCH in `live_scored.csv` | | |
-| Telegram received | | |
-| CAP written (path) | | |
+| Row injected (`live.py --inject`): `2026-10-05_0628_30.0950_78.2000`, first pass p 0.5, risk 3 | 06:28:20 | 0 |
+| VERIFY in `live_scored.csv` | next 10 s pass | ≤ 10 |
+| Node took it from `/todo`: bearing 0°, inside the field of view, 5.0 km (no servo to move) | — | — |
+| 6 frames done: **6 of 6** with smoke, annotated snapshots in `data/snaps/` | — | — |
+| `smoke` posted | 06:29:03 | 43 |
+| DISPATCH in `live_scored.csv`: p 0.9, "image check: smoke" first | next pass | ~50 |
+| Telegram accepted (`sendMessage` ok) | 06:29:13 | 53 |
+| CAP written: `data/cap_2026-10-05_0628_30.0950_78.2000.xml` | 06:29:13 | **53** |
 
-CAP check: `sent` offset __ · `status` Exercise ☐ · description escaped ☐ · file opens in a browser ☐
+CAP check:
+- `sent` uses offset `-00:00` ☑
+- `status` is Exercise ☑
+- the description is escaped (`html.escape`) ☑
+- the file parses as CAP 1.2 XML ☑
 
 ### Runs 3 and 4
 
-- Field outcome: nearest alert __ at __ km; row `id, src, result, ts`; p after __
-- Burn: burn id __; alert __; p and tier before __ → after __
+- **Field outcome (Run 3):** pending. The bot is polling; the team lead sends a location near 30.0950, 78.2000, then a photo, then taps "Real forest fire".
+- **Burn (Run 4), passed:**
+  - Burn `B1791181874` (1 km round 29.94497, 78.25, from 05:31 to 11:31 UTC) was registered through `POST /api/burns`, the dashboard form's endpoint.
+  - Alert `2026-10-05_0630_29.9450_78.2500` sits in Rajaji forest, 12.6 km from the camera, so outside its range and the camera couldn't override.
+  - It went from **VERIFY p 0.5** to **LOG p 0.1** on the next pass, with "inside planned burn B1791181874" first.
+  - An earlier attempt 15 km north landed on 51% farmland, so it was already LOG. The burn still took p from 0.2 to 0.0, but that didn't test a push down a tier.
 
 ### Labels so far
 
 | Sampled | DISPATCH | VERIFY | LOG |
 | --- | --- | --- | --- |
-| Window A | | | |
-| Window B | | | |
+| Window A | 13 | 13 | 14 |
+| Window B | 13 | 13 | 14 |
 
-Seed __. Labelled by both: __ / 80. First-pass agreement so far: __ / __.
+- **Seed:** 20261005.
+- **Halves:** 42 tune and 38 test, fixed in `data/sample.csv` before labelling.
+- **Labelling template:** `data/labels_template.csv`, in shuffled order with no tier.
+- **Progress:** labelled by both, 0 / 80.
 
 ### Changes to thresholds and spec
 
 | What | From → To | Why | Who |
 | --- | --- | --- | --- |
-| | | | |
+| Thresholds and weights | none | Tuned in Phase 3 | — |
+| Camera node (§11.2) | pan to the bearing → check only alerts within heading ± 30° and 10 km | Phone camera, no servo (decided 3 Oct) | Claude Code |
+| Demo injection (§13) | hand-edited row → `python live.py --inject [km]`, which copies a nominal-confidence, low-FRP Window B row onto the camera's line of sight at the current time and warns unless the first pass is VERIFY | Makes the demo-point rule repeatable | Claude Code |
+| Live FIRMS poll (§3.1) | always on → `python live.py --firms` | Off by default, so a real alert can't post to the group mid-demo | Claude Code |
+| Bot callback data | trusted → only the four outcome values accepted | Telegram callback data comes from the client | Claude Code |
 
 ### Carry-overs
 
-| Item | Owner | Due hour |
+| Item | Owner | Due |
 | --- | --- | --- |
-| | | |
+| Run 3: field confirmation through the bot | Team lead | 5–6 Oct |
+| Label 40+ alerts (two labellers, blind) | Product + pitch, Geo data | 6 Oct |
+| Hand-check of 5 alerts | Geo data | 6 Oct |
+| Run 2 with the real phone stream (`CAMERA_SOURCE=http://<phone-ip>:8080/video`) | Team lead | 6 Oct |
+| Reset the demo state before rehearsals (runbook step 2), and remove the two test burns with `git checkout burns.csv` | Team lead | before Phase 4 |

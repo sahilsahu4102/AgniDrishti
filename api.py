@@ -2,6 +2,7 @@ import csv
 import re
 import time
 from datetime import datetime
+from typing import Literal
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException
@@ -12,6 +13,7 @@ from pydantic import BaseModel, Field, model_validator
 
 import config as c
 import score
+import store
 
 app = FastAPI(title='AgniDrishti')
 app.add_middleware(GZipMiddleware, minimum_size=2000)
@@ -128,6 +130,32 @@ def add_burn(b: Burn):
     with open(c.BURNS, 'a', newline='', encoding='utf-8') as f:
         csv.writer(f).writerow(row.values())
     return row
+
+
+def known(aid):
+    return any(not t.empty and (t.id == aid).any() for t in (table(c.LIVE_SCORED), table(c.SCORED)))
+
+
+@app.get('/todo')
+def todo(node: str):
+    """Camera node work list (§12.1): up to 10 DISPATCH or VERIFY alerts with no outcome yet, newest first (D3)."""
+    df = pd.concat([t for t in (table(c.SCORED), table(c.LIVE_SCORED)) if not t.empty] or [pd.DataFrame(columns=LIST)])
+    open_ = df[df.tier.isin(['DISPATCH', 'VERIFY']) & ~df.id.isin(latest_outcomes().keys())]
+    return [{'id': r.id, 'lat': r.latitude, 'lon': r.longitude} for r in open_.sort_values('t', ascending=False).head(10).itertuples()]
+
+
+class Seen(BaseModel):
+    id: str = Field(pattern=ID.pattern)
+    node: str = Field(min_length=1, max_length=40, pattern=r'^[\w-]+$')
+    result: Literal['smoke', 'nosmoke']
+
+
+@app.post('/seen')
+def seen(s: Seen):
+    if not known(s.id):
+        raise HTTPException(404, 'unknown alert id')
+    store.record(s.id, s.node, s.result)
+    return {'ok': True}
 
 
 @app.get('/cap/{aid}.xml')
