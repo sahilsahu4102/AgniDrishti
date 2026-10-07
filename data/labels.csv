@@ -1,0 +1,161 @@
+id,label,labeller,dnbr,note
+2026-01-22_0711_28.9316_79.6803,unclear,claude,-0.005,"[high] No change between scenes: scrub/grass with tree patches and tracks, river 1 km N, no fields at the spot. No scar or smoke (dNBR -0.005). Same pass as 2026-01-22_0711_28.9330_79.6812."
+2026-01-16_0724_29.9788_80.1019,forest_fire,claude,0.391,[high] Large fresh scar (~1.5 km across) on a grass/pine hillside covering the box: dry orange-brown slope turned black in true colour and maroon in SWIR. No fields or houses.
+2026-04-26_0810_28.9380_79.9632,outside_forest,claude,,"[med] Before scene only (20 Apr). Harvested wheat fields beside a town and canal; no forest within 1 km, so any fire here was on cropland."
+2025-11-10_0818_29.1773_79.0989,outside_forest,claude,0.015,"[high] Terai farmland (paddy/sugarcane fields, tree-lined drain, scattered houses). One field in the box darkened after (possible stubble burn). No forest."
+2026-01-25_0755_28.8909_79.4969,outside_forest,claude,0.0,[high] Farmland (green wheat and bare fields) beside a village; one field in the box turned dark in the after scene (possible residue burn). No forest.
+2026-01-03_2032_29.8073_79.6558,unclear,claude,0.064,"[low] Forested hills with grassy slopes. Faint diffuse darkening on the slope NE of the box, but chip dNBR reaches 0.10 only in scattered specks, mostly outside the footprint; box unchanged (0.064). Possible low-severity grass fire, not clear."
+2025-11-15_0824_29.0097_79.2840,outside_forest,claude,0.068,"[high] Farmland at a village edge with a tree-lined stream through the box; a field in the box darkened after (possible stubble burn). Round white building or tank 0.5 km NE, not a kiln."
+2026-04-19_2106_29.3706_79.4686,forest_fire,claude,0.009,"[med] Forest slope at the SE edge of Nainital (Tallital) beside a bare landslide gully. After scene (20 Apr, ~8 h later) shows active flames and smoke ~0.6 km NE and a fresh ~1 km2 scar starting ~0.4 km E. The box itself (landslide/gully) is unchanged (dNBR 0.009), so the scar is at the footprint edge."
+2026-01-14_2025_30.5536_78.2660,unclear,claude,0.03,"[high] Mountain slope: forest in the west half of the box, terraced fields and houses in the east half. No scar or smoke (dNBR 0.03); valley fog/snow in the after scene is away from the box."
+2026-04-26_2035_28.9110_79.7210,outside_forest,claude,0.097,"[med] Harvested wheat fields by a road; white-roofed sheds 0.3 km E and N (night detection: check them for a factory). After scene (10 May) has cloud and haze beside the box, so dNBR 0.097 is unreliable; no scar seen. No forest."
+2026-01-18_2051_29.8702_79.0331,forest_fire,claude,0.025,"[med] Small fresh dark patch (~250x150 m) on a scrub/grass slope in the top half of the box: darker in after true colour, maroon in after SWIR. Box dNBR only 0.025 because the patch is small. No terraces or houses seen."
+2025-12-23_2037_29.7264_79.7253,unclear,claude,0.071,"[low] Forested hills; box unchanged. Broad darkening of the slope NW of the box, but the whole after scene is darker (low winter sun) and chip dNBR is only specks. 1 km E of 2025-12-24_0754_29.7250_79.7147, which shows a patchy burn. Possible surface fire."
+2025-12-25_0735_29.7535_79.6798,unclear,claude,0.044,[med] Forested slope with small orange clearings or terraces at the east edge of the box; river 1 km SE. No scar in the footprint (dNBR 0.044); weak darkening ~0.8 km ESE.
+2025-12-30_2006_29.4997_79.5609,unclear,claude,0.081,[low] Ridge-top village with terraced (orange-brown) slopes and forest gullies. Weak change in a small patch in the box (chip dNBR 0.1-0.2); small smoke puffs and hot specks 0.3-0.5 km SW in the after scene (10 Jan). Cannot tell field from forest at the spot.
+2026-04-02_1945_29.3177_79.9878,unclear,claude,0.107,"[low] Forested hills. Diffuse NBR drop over the box and a ~1 km2 area S and W of it (chip dNBR mostly 0.10-0.27) with no darkening in true colour, plus two small reddish-brown spots in the box (chip dNBR >0.27). The 35-day scene gap (16 Mar-20 Apr) spans spring leaf fall, which gives the same signal. Possible surface fire."
+2026-04-23_1951_30.2836_78.9099,forest_fire,claude,0.047,"[med] Grass/scrub/pine hill slopes. Fresh dark scar 0.3-0.5 km W/NW of the point that formed between the 22 Apr and 25 Apr scenes, plus an active-fire pixel ~0.6 km NW and smoke haze. Box itself unchanged (dNBR 0.047)."
+2026-04-18_0720_29.6256_79.9426,forest_fire,claude,0.116,"[low] Box is a village with terraced fields; scrub/forest slope just N. Fresh burn (10-20 Apr) mostly along that slope N of the box (chip dNBR up to ~0.3, darker in true colour), a few patches in the terraces; smoke haze in the after scene. Terrace wheat harvest can also raise the box dNBR (0.116). Check whether the burn is field or forest."
+2026-01-20_0749_29.9892_79.5951,unclear,claude,0.099,"[high] Before scene (15 Jan) has cloud bands over the box, so no clean before image and dNBR 0.099 is cloud-affected. After scene shows forest on the slope and a terraced village just S; no clear scar."
+2026-04-30_0835_28.8861_79.9603,outside_forest,claude,0.093,"[high] Flat farmland: harvested wheat fields with drains, village 0.8 km W, orchard S. Fields changed between scenes (ploughing/burning). No forest."
+2026-04-28_0732_28.9294_79.8840,outside_forest,claude,,[med] Before scene only (20 Apr). Harvested wheat fields with a meandering tree-lined stream through the box; villages 1 km N. No forest.
+2025-12-29_2025_29.8363_79.1541,forest_fire,claude,0.232,"[high] Large fresh scar (~2 km across, chip dNBR 0.27-0.44) over grass/pine hill slopes covering the box: orange-brown slopes turned dark brown/maroon."
+2025-11-11_0759_29.8004_77.9364,outside_forest,claude,0.005,"[low] Box is in a town (dense houses, small fields), no change (dNBR 0.005). A large industrial complex (factory sheds, possibly a sugar mill) lies 0.4-1 km S, at the footprint edge; if it is the heat source, recurring_source."
+2026-01-18_0826_29.6634_79.2811,forest_fire,claude,0.134,"[med] A N-S strip of dry grass/scrub slope through the west half of the box burned between 10 and 20 Jan (maroon in after SWIR, chip dNBR up to ~0.3); green wheat terraces just E unchanged. Possible controlled grass burn."
+2026-04-28_0732_28.9312_79.9980,unclear,claude,,[low] Before scene only (20 Apr). Box is harvested fields at the edge of a large forest block (forest at the SE corner of the box and S/E of it). Cannot tell whether the fire was in the fields or the forest.
+2026-04-24_0708_29.1413_78.9665,outside_forest,claude,0.056,[high] Farmland. A wheat field at the east edge of the box burned between 20 and 25 Apr (bright red/maroon in after SWIR); blue-roofed sheds 0.2 km W show no heat. No forest.
+2025-11-05_0812_29.0318_79.2124,outside_forest,claude,0.253,"[high] Farmland: paddy fields harvested between the scenes, some darkened (stubble burning). The high dNBR (0.253) is harvest and burning across all fields. Forest 1 km SW unchanged."
+2026-05-23_2029_29.9129_78.6736,forest_fire,claude,0.073,"[med] Forested hills with roads, village 0.3 km N. Small fresh scar in forest just W of the point (maroon in after SWIR), a burnt strip along the road 0.3 km N and a larger scar ~0.8 km SW. Box dNBR 0.073 because the patch is small."
+2026-04-25_0829_28.9559_79.9982,outside_forest,claude,,[med] Before scene only (20 Apr). Harvested wheat fields with a canal through the box and scattered houses. No forest.
+2026-05-23_2029_30.6704_78.2724,forest_fire,claude,0.18,"[low] Pine-type forest W of terraced fields. A coherent N-S band of NBR drop along the forest strip through the box and S of it (chip dNBR 0.10-0.30) by 7 Jun, but true colour barely darkened and the after scene has cloud and cloud shadow at the N edge of the box, which can inflate dNBR. Possible surface (litter) fire."
+2026-04-29_2119_29.9529_79.3471,unclear,claude,,"[med] Before scene only (22 Apr); no after scene within 20 days. Footprint is forest/scrub hill slopes, so whether it burned cannot be seen."
+2026-01-21_0730_30.5221_79.6464,forest_fire,claude,-0.003,[med] High slope ~9 km ESE of Joshimath (dry grass/scrub). After scene (4 Feb) shows fresh snow in gullies and a large dark-brown/maroon area on the slope S and W of the point (chip dNBR >0.27 over much of the footprint). Box dNBR -0.003 only because snow covers part of the box.
+2025-11-05_0812_29.3623_79.0498,outside_forest,claude,0.379,"[high] Farmland with villages beside a wide braided river; paddy fields harvested and several burnt (dark) between the scenes, one in the box. Forest ~1 km W unchanged."
+2026-04-26_2035_29.9354_78.4650,unclear,claude,-0.044,"[high] After scene (13 May) has cloud and cloud shadow over the footprint, so it cannot show a scar; dNBR -0.044 is cloud-affected. Footprint mixes forest and terraced fields; villages 0.5-1 km W."
+2026-05-14_0733_28.9968_79.4998,outside_forest,claude,0.239,"[high] Large rectangular fields (harvested wheat, sugarcane), village 1 km S; a field in the box changed strongly between scenes (harvest/burn, dNBR 0.239). No forest."
+2026-05-11_0829_28.9418_79.9859,outside_forest,claude,-0.077,[high] Farmland and village houses along a canal and road; fields in the box had already burnt before the 22 Apr scene (maroon) and were ploughed by 20 May (dNBR -0.077). No forest.
+2026-01-22_0711_28.9330_79.6812,unclear,claude,-0.009,"[high] Same pass and place as 2026-01-22_0711_28.9316_79.6803: scrub/grass with tree patches and tracks, river 1 km N. No change, no scar or smoke (dNBR -0.009)."
+2026-04-24_2112_30.3067_78.7041,forest_fire,claude,0.018,"[med] Forest slope above terraced fields. After scene (25 Apr, ~8 h after the alert) shows an active-fire pixel in the forest ~0.35 km W of the point and smoke drifting over the box; no scar yet (dNBR 0.018), consistent with a ground fire under canopy."
+2026-01-15_0742_30.0604_78.8045,forest_fire,claude,0.164,"[high] Fresh irregular scar in the box and S of it on dry grass/pine slopes (charred in after true colour, maroon in SWIR, chip dNBR up to ~0.3); no terrace lines; village 0.4 km NE."
+2025-11-10_0818_29.2631_78.9845,outside_forest,claude,0.08,"[high] Terai farmland: fields (some harvested/burnt between scenes), road and village S; a narrow forest strip 0.3 km W is unchanged."
+2026-05-24_2010_30.0293_78.4151,forest_fire,claude,0.16,"[high] Forested hills. Fresh scar over the box and W of it, plus two active-fire pixels at the E edge of the box in the after scene (25 May, ~9 h after the alert)."
+2026-01-15_2007_29.3675_79.6526,unclear,claude,0.043,[low] Dense forest on a slope; village and terraces 0.6 km SW. Only a small faint darkening in the box (chip dNBR 0.1-0.2 over ~1 ha). Possible ground fire under canopy.
+2026-05-20_1945_29.7307_79.9805,forest_fire,claude,,"[med] After scene only (25 May, 5 days after); no before scene. Large dark char scar on the forested hillside touching the NE corner of the box (NBR below 0 over most of the box's NE quarter, like the burnt references) and smoke-like wisps over the box. Freshness cannot be confirmed without a before scene."
+2025-12-23_2037_29.9572_80.6566,forest_fire,claude,0.136,"[high] Large fresh burn (chip dNBR >0.27) over the dry grass/pine slope N of the river, reaching the box; river at the S edge of the box."
+2026-04-27_0751_28.9572_79.9782,outside_forest,claude,,[med] Before scene only (20 Apr). Harvested wheat fields with a tree-lined stream and a road through the box; villages around. No forest.
+2025-12-16_2108_31.0385_77.9893,unclear,claude,0.055,"[low] Steep forest and grass slopes. Only scattered faint specks of change in and around the box (chip dNBR 0.1-0.2), no coherent scar; after scene darker overall (low winter sun)."
+2026-05-21_2106_30.4361_78.5644,forest_fire,claude,0.273,"[med] Dry grass/scrub slopes with forest in gullies. After scene (25 May) shows brown-maroon burn patches across the box and S of it (chip dNBR 0.10-0.44), but a pale haze (smoke or thin cloud) sits over the W half of the box and can inflate dNBR."
+2025-12-08_2018_30.1058_78.9453,forest_fire,claude,0.107,"[med] Small fresh patch (~250x200 m) on a dry grass/scrub slope in the centre-right of the box (maroon in after SWIR, chip dNBR up to ~0.3); houses 0.3 km NW. Possible controlled grass burn; terraces not visible but not ruled out."
+2025-12-24_0754_29.7250_79.7147,forest_fire,claude,0.092,[med] Pine-type forest. Patchy low-severity burn in the box and S of it: reddish-brown litter turned dark and pale patches in SWIR turned brown (chip dNBR 0.1-0.3). 1 km W of 2025-12-23_2037_29.7264_79.7253 (night before).
+2025-11-01_0747_29.7132_77.8347,outside_forest,claude,0.036,"[low] Farmland with villages; a large bright structure (~300 m: factory, warehouse or sheds) fills the SW corner of the box. After scene has no data over the S half of the box; no scar in the rest. If the structure is a heat source, recurring_source."
+2026-05-23_0805_30.1120_78.7864,forest_fire,claude,0.198,"[high] Fresh scar (~1.5 km) on a dry grass/scrub slope covering the N half of the box: orange-brown slope turned dark brown, maroon in after SWIR (chip dNBR 0.27-0.44). The green forest strip in the S half of the box did not burn."
+2026-05-20_1945_29.6203_80.3251,unclear,claude,,"[med] After scene only (9 Jun, 20 days after); no before scene. Forested hills with brownish patches along the ridges in the box, but their NBR is clearly positive (not char-like), and without a before scene a burn cannot be told from dry grass."
+2026-01-20_2013_30.6731_78.1504,forest_fire,claude,0.097,"[med] Steep dry-grass/scrub slope by conifer forest. An older burn already covered the E half of the box before 18 Jan (maroon in before SWIR); between 18 Jan and 7 Feb a new burn covered the grass slope W of the box and its W half (maroon in after SWIR, chip dNBR 0.27+). Box dNBR 0.097 mixes the new burn with the older scar."
+2026-05-24_0746_30.0227_79.6512,forest_fire,claude,0.122,"[med] Forested hills by a river. After scene (25 May, 1 day after) shows a fresh dark patch (~500x250 m) in forest in the box and SW of it (maroon in SWIR, chip dNBR 0.10-0.27). Wispy haze in that scene (smoke or thin cloud, 16% cloud) lies W of the patch."
+2026-04-20_0823_29.2065_79.8196,unclear,claude,0.173,"[low] Forested hills, no fields. NBR dropped across the whole chip between 10 and 25 Apr (63% of chip at dNBR >=0.10; box 0.173) while true colour brightened rather than darkened, which looks like spring leaf fall/drying. A few stronger reddish streaks NW and S of the box (chip dNBR 0.27-0.44) may be surface-fire scars."
+2026-04-25_0829_28.9502_79.7869,outside_forest,claude,,[med] Before scene only (20 Apr). Harvested wheat fields with a village and road along the S edge of the box; tree-lined canal 1 km NW. No forest.
+2025-12-03_0747_29.8597_77.8396,outside_forest,claude,0.042,"[high] Flat farmland with small fields between two villages (0.7 km NW and SE); field-by-field changes (sowing/harvest) between scenes, no scar pattern. No forest."
+2026-05-23_2029_29.6267_80.1434,unclear,claude,0.053,"[low] Pine-type forest slopes; terraced fields 0.4 km N and a dry streambed through the SE of the box. Weak diffuse NBR drop over the W half of the footprint (chip dNBR 0.10-0.27) with no darkening in true colour. Possible low-severity litter fire, not clear."
+2026-05-14_0733_29.1268_79.2100,outside_forest,claude,-0.116,"[high] Farmland (harvested wheat, then green crops) with tree-lined streams; village 0.8 km NE. A small dark (burnt) field in the box in the before scene (25 Apr). Fields greened by 20 May (dNBR -0.116). No forest."
+2025-11-05_0812_29.2919_78.9631,outside_forest,claude,0.355,"[high] Farmland W of a river; paddy fields harvested and some burnt between 22 Oct and 11 Nov, including in the box (dNBR 0.355 from harvest/burning). Forest across the river 0.5 km E is unchanged."
+2026-01-18_2050_30.7937_78.0519,forest_fire,claude,0.155,"[med] Steep dry-grass slopes with conifer forest below. Patchy fresh burn over the box and NE of it between 8 Jan and 7 Feb (reddish-brown in after SWIR, chip dNBR 0.10-0.44, darker in true colour); 0.4 km from 2026-01-18_0827_30.7972_78.0545 (same day). 30-day scene gap."
+2026-01-07_0832_29.9988_80.5799,forest_fire,claude,0.209,"[high] Steep dry-grass/scrub slopes with strong winter shadows. A ~1 km E-W band of sunlit grass slope across the N half of the box burned between 5 and 10 Jan: bright orange turned dark brown, pale to maroon in SWIR (chip dNBR 0.27-0.44+). No fields seen."
+2026-01-18_0827_30.7972_78.0545,forest_fire,claude,0.142,"[med] Steep slopes of dry grass/scrub between conifer patches. Fresh patchy burn in the S half of the box and around it between 8 Jan and 7 Feb (maroon in after SWIR, chip dNBR 0.10-0.44); same fire area as 2026-01-18_2050_30.7937_78.0519 (0.4 km SW, same day). 30-day scene gap."
+2026-05-27_2054_30.1836_79.3890,forest_fire,claude,0.155,[med] Pine-type forest slope with dry streambeds/tracks through the S half of the box and a bright quarry or building 0.3 km E. A ~1 km area over the N half of the box and N/NE of it turned reddish-brown in after SWIR (chip dNBR 0.10-0.44) between 20 May and 9 Jun; only slight darkening in true colour. Likely surface (litter) fire; no terraces in the burnt area.
+2025-12-25_0736_30.6246_78.1826,unclear,claude,0.016,"[high] Conifer forest with small orange clearings or terraced fields in the box; fresh snow on nearby slopes in the after scene (8 Jan), not on the box. No scar or smoke (dNBR 0.016)."
+2026-05-18_0758_30.3008_77.8084,unclear,claude,0.059,"[low] Forested hills with dry streambeds. Before scene (13 May) has cloud and cloud shadow just E and SW of the box. After scene (7 Jun, 20 days after) shows a reddish-brown patch in the N half of the box (maroon in SWIR, chip dNBR 0.10-0.30), possibly scorched canopy, but it is brighter, not darker, in true colour and box dNBR is only 0.059."
+2026-05-24_2010_30.1899_79.3596,forest_fire,claude,0.053,"[med] Hill slope with a terraced village 0.5 km N/NE. After scene (25 May, ~9 h after the alert) shows a fresh dark scar (~250 m) in scrub/forest at the NE corner of the box with 2-3 bright active-fire pixels at its edge; haze/cloud over the W of the chip. Box dNBR 0.053 because the scar is at the corner."
+2026-05-12_2035_30.2457_79.1812,forest_fire,claude,0.289,"[med] Large fresh burn (>1 km2, chip dNBR 0.27-0.44, darker in true colour) over the N half of the chip, covering the N half of the box. The S half of the box is a striped slope that looks like terraced (possibly abandoned) fields. The fire spread well beyond the terraces; if the footprint is judged cropland, outside_forest."
+2026-04-26_2035_29.7795_79.5131,unclear,claude,,[med] Before scene only (20 Apr); no after scene within 20 days. Footprint is forest on a ridge; a village with fields is 0.5 km N. Whether it burned cannot be seen.
+2026-04-22_0745_29.6335_79.9656,forest_fire,claude,0.121,[med] Forested hills (river 1 km N). In 5 days (20-25 Apr) a small dark patch in the SW of the box and diffuse patches across the box and S of it turned maroon in SWIR (chip dNBR 0.10-0.30); little change in true colour. Likely low-severity surface fire.
+2025-11-01_0746_28.8635_79.6871,outside_forest,claude,0.23,[high] Flat farmland; paddy harvested between 17 Oct and 16 Nov across the whole chip (dNBR 0.23 from harvest). Villages 0.5-1 km N and S. No forest.
+2025-12-29_2025_29.8580_79.1242,forest_fire,claude,0.067,"[low] Forested slope; terraced village 0.6 km NE. The S half of the box darkened between 16 Dec and 15 Jan (brown-maroon in after SWIR, chip dNBR 0.10-0.27, darker in true colour), like a surface burn under open forest, but box dNBR is only 0.067. Same night pass as 2025-12-29_2025_29.8363_79.1541 (3.7 km SE, large scar)."
+2025-11-27_0759_28.8828_79.8398,outside_forest,claude,-0.194,[high] Farmland on a river floodplain (sandy bars W and S). Most fields greened (wheat sown) between 16 Nov and 11 Dec (dNBR -0.194); a few fields in and S of the box burnt or ploughed. No forest.
+2026-04-25_0829_29.9461_79.3253,unclear,claude,,"[med] Before scene only (22 Apr). Box straddles terraced fields and houses (W half) and a forest slope (E half), with a road and streambed through it. Cannot tell where a fire would have been."
+2026-05-24_2010_30.1239_78.7907,forest_fire,claude,0.117,"[med] Fresh dark scar (~400x150 m) in forest/scrub in the box, just S of a village's houses, with a smoke plume drifting S in the after scene (25 May, ~9 h after the alert). A larger fresh scar on the dry slope ~1 km SW. The scar is in vegetation, not among the houses; check the village edge."
+2026-04-28_0733_29.2146_79.0923,unclear,claude,,"[low] Before scene only (20 Apr). Box is on the bank of a wide braided riverbed: riverine scrub/grass, a harvested field with a small white structure, and a small patch already burnt by 20 Apr (maroon in SWIR). Mixed scrub and fields; cannot tell. Check the white structure for a kiln."
+2025-11-26_0818_29.8148_78.1102,outside_forest,claude,0.162,[high] Farmland with small fields beside a linear village (0.3 km NW); several fields in and around the box harvested or burnt between 14 and 29 Nov (field-shaped dNBR spots). Forest 0.8 km NW unchanged.
+2025-11-26_0818_29.8155_78.1115,outside_forest,claude,0.125,[high] Same pass and farmland as 2025-11-26_0818_29.8148_78.1102 (150 m away): field-by-field harvest/burn changes in and around the box. Forest 0.8 km NW unchanged.
+2026-01-08_0814_30.7258_78.6348,forest_fire,claude,0.059,"[med] Conifer forest slope (box mostly in shadow). A fresh scar on the sunlit grassy ridge 0.3-0.4 km SW, inside the footprint (pale orange to maroon in after SWIR, chip dNBR 0.27-0.44), plus a faint streak in the box. Box dNBR only 0.059."
+2026-04-28_0732_28.9109_79.9274,outside_forest,claude,-0.003,"[med] Flat farmland (harvested wheat, tree-lined drains), village 1 km NW, no forest. After scene (10 May) has cloud and cloud shadow over the box, so only the before scene is usable (dNBR -0.003 unreliable)."
+2026-05-02_0758_28.9134_79.7963,outside_forest,claude,0.151,"[high] Flat farmland: harvested wheat fields ploughed or burnt between 20 Apr and 20 May (dNBR 0.151 across most fields), village 0.6 km W, orchards S. No forest."
+2026-01-22_0711_28.9316_79.6803,unclear,final,-0.005,kept after user review 2026-10-07
+2026-01-16_0724_29.9788_80.1019,forest_fire,final,0.391,kept after user review 2026-10-07
+2026-04-26_0810_28.9380_79.9632,outside_forest,final,,kept after user review 2026-10-07
+2025-11-10_0818_29.1773_79.0989,outside_forest,final,0.015,kept after user review 2026-10-07
+2026-01-25_0755_28.8909_79.4969,outside_forest,final,0.0,kept after user review 2026-10-07
+2026-01-03_2032_29.8073_79.6558,unclear,final,0.064,kept after user review 2026-10-07
+2025-11-15_0824_29.0097_79.2840,outside_forest,final,0.068,kept after user review 2026-10-07
+2026-04-19_2106_29.3706_79.4686,forest_fire,final,0.009,kept after user review 2026-10-07
+2026-01-14_2025_30.5536_78.2660,unclear,final,0.03,kept after user review 2026-10-07
+2026-04-26_2035_28.9110_79.7210,outside_forest,final,0.097,kept after user review 2026-10-07
+2026-01-18_2051_29.8702_79.0331,forest_fire,final,0.025,kept after user review 2026-10-07
+2025-12-23_2037_29.7264_79.7253,unclear,final,0.071,kept after user review 2026-10-07
+2025-12-25_0735_29.7535_79.6798,unclear,final,0.044,kept after user review 2026-10-07
+2025-12-30_2006_29.4997_79.5609,unclear,final,0.081,kept after user review 2026-10-07
+2026-04-02_1945_29.3177_79.9878,unclear,final,0.107,kept after user review 2026-10-07
+2026-04-23_1951_30.2836_78.9099,forest_fire,final,0.047,kept after user review 2026-10-07
+2026-04-18_0720_29.6256_79.9426,forest_fire,final,0.116,kept after user review 2026-10-07
+2026-01-20_0749_29.9892_79.5951,unclear,final,0.099,kept after user review 2026-10-07
+2026-04-30_0835_28.8861_79.9603,outside_forest,final,0.093,kept after user review 2026-10-07
+2026-04-28_0732_28.9294_79.8840,outside_forest,final,,kept after user review 2026-10-07
+2025-12-29_2025_29.8363_79.1541,forest_fire,final,0.232,kept after user review 2026-10-07
+2025-11-11_0759_29.8004_77.9364,outside_forest,final,0.005,kept after user review 2026-10-07
+2026-01-18_0826_29.6634_79.2811,forest_fire,final,0.134,kept after user review 2026-10-07
+2026-04-28_0732_28.9312_79.9980,unclear,final,,kept after user review 2026-10-07
+2026-04-24_0708_29.1413_78.9665,outside_forest,final,0.056,kept after user review 2026-10-07
+2025-11-05_0812_29.0318_79.2124,outside_forest,final,0.253,kept after user review 2026-10-07
+2026-05-23_2029_29.9129_78.6736,forest_fire,final,0.073,kept after user review 2026-10-07
+2026-04-25_0829_28.9559_79.9982,outside_forest,final,,kept after user review 2026-10-07
+2026-05-23_2029_30.6704_78.2724,forest_fire,final,0.18,kept after user review 2026-10-07
+2026-04-29_2119_29.9529_79.3471,unclear,final,,kept after user review 2026-10-07
+2026-01-21_0730_30.5221_79.6464,forest_fire,final,-0.003,kept after user review 2026-10-07
+2025-11-05_0812_29.3623_79.0498,outside_forest,final,0.379,kept after user review 2026-10-07
+2026-04-26_2035_29.9354_78.4650,unclear,final,-0.044,kept after user review 2026-10-07
+2026-05-14_0733_28.9968_79.4998,outside_forest,final,0.239,kept after user review 2026-10-07
+2026-05-11_0829_28.9418_79.9859,outside_forest,final,-0.077,kept after user review 2026-10-07
+2026-01-22_0711_28.9330_79.6812,unclear,final,-0.009,kept after user review 2026-10-07
+2026-04-24_2112_30.3067_78.7041,forest_fire,final,0.018,kept after user review 2026-10-07
+2026-01-15_0742_30.0604_78.8045,forest_fire,final,0.164,kept after user review 2026-10-07
+2025-11-10_0818_29.2631_78.9845,outside_forest,final,0.08,kept after user review 2026-10-07
+2026-05-24_2010_30.0293_78.4151,forest_fire,final,0.16,kept after user review 2026-10-07
+2026-01-15_2007_29.3675_79.6526,unclear,final,0.043,kept after user review 2026-10-07
+2026-05-20_1945_29.7307_79.9805,forest_fire,final,,kept after user review 2026-10-07
+2025-12-23_2037_29.9572_80.6566,forest_fire,final,0.136,kept after user review 2026-10-07
+2026-04-27_0751_28.9572_79.9782,outside_forest,final,,kept after user review 2026-10-07
+2025-12-16_2108_31.0385_77.9893,unclear,final,0.055,kept after user review 2026-10-07
+2026-05-21_2106_30.4361_78.5644,forest_fire,final,0.273,kept after user review 2026-10-07
+2025-12-08_2018_30.1058_78.9453,forest_fire,final,0.107,kept after user review 2026-10-07
+2025-12-24_0754_29.7250_79.7147,forest_fire,final,0.092,kept after user review 2026-10-07
+2025-11-01_0747_29.7132_77.8347,outside_forest,final,0.036,kept after user review 2026-10-07
+2026-05-23_0805_30.1120_78.7864,forest_fire,final,0.198,kept after user review 2026-10-07
+2026-05-20_1945_29.6203_80.3251,unclear,final,,kept after user review 2026-10-07
+2026-01-20_2013_30.6731_78.1504,forest_fire,final,0.097,kept after user review 2026-10-07
+2026-05-24_0746_30.0227_79.6512,forest_fire,final,0.122,kept after user review 2026-10-07
+2026-04-20_0823_29.2065_79.8196,unclear,final,0.173,kept after user review 2026-10-07
+2026-04-25_0829_28.9502_79.7869,outside_forest,final,,kept after user review 2026-10-07
+2025-12-03_0747_29.8597_77.8396,outside_forest,final,0.042,kept after user review 2026-10-07
+2026-05-23_2029_29.6267_80.1434,unclear,final,0.053,kept after user review 2026-10-07
+2026-05-14_0733_29.1268_79.2100,outside_forest,final,-0.116,kept after user review 2026-10-07
+2025-11-05_0812_29.2919_78.9631,outside_forest,final,0.355,kept after user review 2026-10-07
+2026-01-18_2050_30.7937_78.0519,forest_fire,final,0.155,kept after user review 2026-10-07
+2026-01-07_0832_29.9988_80.5799,forest_fire,final,0.209,kept after user review 2026-10-07
+2026-01-18_0827_30.7972_78.0545,forest_fire,final,0.142,kept after user review 2026-10-07
+2026-05-27_2054_30.1836_79.3890,forest_fire,final,0.155,kept after user review 2026-10-07
+2025-12-25_0736_30.6246_78.1826,unclear,final,0.016,kept after user review 2026-10-07
+2026-05-18_0758_30.3008_77.8084,unclear,final,0.059,kept after user review 2026-10-07
+2026-05-24_2010_30.1899_79.3596,forest_fire,final,0.053,kept after user review 2026-10-07
+2026-05-12_2035_30.2457_79.1812,forest_fire,final,0.289,kept after user review 2026-10-07
+2026-04-26_2035_29.7795_79.5131,unclear,final,,kept after user review 2026-10-07
+2026-04-22_0745_29.6335_79.9656,forest_fire,final,0.121,kept after user review 2026-10-07
+2025-11-01_0746_28.8635_79.6871,outside_forest,final,0.23,kept after user review 2026-10-07
+2025-12-29_2025_29.8580_79.1242,forest_fire,final,0.067,kept after user review 2026-10-07
+2025-11-27_0759_28.8828_79.8398,outside_forest,final,-0.194,kept after user review 2026-10-07
+2026-04-25_0829_29.9461_79.3253,unclear,final,,kept after user review 2026-10-07
+2026-05-24_2010_30.1239_78.7907,forest_fire,final,0.117,kept after user review 2026-10-07
+2026-04-28_0733_29.2146_79.0923,unclear,final,,kept after user review 2026-10-07
+2025-11-26_0818_29.8148_78.1102,outside_forest,final,0.162,kept after user review 2026-10-07
+2025-11-26_0818_29.8155_78.1115,outside_forest,final,0.125,kept after user review 2026-10-07
+2026-01-08_0814_30.7258_78.6348,forest_fire,final,0.059,kept after user review 2026-10-07
+2026-04-28_0732_28.9109_79.9274,outside_forest,final,-0.003,kept after user review 2026-10-07
+2026-05-02_0758_28.9134_79.7963,outside_forest,final,0.151,kept after user review 2026-10-07
