@@ -54,8 +54,8 @@ Keep the numbers honest:
 
 This is §15.3 Gate 3, minus the rehearsal items that moved to Gate 4 (R4).
 
-- [ ] All 80 alerts labelled by two people; first-pass agreement recorded. Product, Geo.
-- [ ] Weights tuned on one half; metrics computed on the other. Scoring.
+- [x] All 80 alerts labelled; done as option B, not two people (see Labelling below). 7 Oct.
+- [x] Weights tuned on one half; metrics computed on the other. Scoring. 8 Oct.
 - [x] Camera false-alarm test done (30 minutes of cloud, fog and haze). Vision. 42.6 min; thresholds locked 6 Oct.
 - [ ] End-to-end latency measured. Hardware + bot.
 - [ ] Metrics slide and demo script drafted with the final numbers. Product.
@@ -71,49 +71,66 @@ This is §15.3 Gate 3, minus the rehearsal items that moved to Gate 4 (R4).
 
 ### Labelling
 
-- Labellers:
-- First-pass agreement: __ / 80 (__%)
-- Disagreements (label pair → count):
-- Final labels:
+- **Labellers (option B, chosen 7 Oct):** there was no second person, so §14's two independent labellers became the following.
+  - Claude pre-labelled all 80 blind. It used only the before/after chips, the `dnbr` hint and the alert id, never the tier, p, reasons or landcover. Those are in `data/labels_claude.csv`, each with a note and a confidence: 31 high, 33 med, 16 low.
+  - The user then checked every label, starting with the low-confidence ones.
+- **First-pass agreement:** not measured, because there was only one human. Instead: **the user kept 80 of 80 AI pre-labels.** Slide wording: "AI pre-labels, every label human-verified".
+- **Rule 1 reading:** an alert is `unclear` only when neither side has a usable image. The 12 alerts with a scene on one side only were labelled from that scene.
+- **Final labels** (`final` rows in `data/labels.csv`):
 
 | Window | forest_fire | outside_forest | recurring_source | unclear |
 | --- | --- | --- | --- | --- |
-| A | | | | |
-| B | | | | |
+| A | 15 | 14 | 0 | 11 |
+| B | 16 | 13 | 0 | 11 |
 
 - dNBR hints: computed for 68 / 80 by `python s2.py` on 6 Oct; 29 of them ≥ 0.10 (15 in Window A, 14 in Window B). The other 12 had no scene under 20% cloud within 20 days on one side. Values are in the `dnbr` column of `data/labels_template.csv`. Before and after chips (true colour and SWIR) are on the blind sheet `data/labelling/index.html`, which shows no tier, p or reasons.
 
 ### Tuning (tune half only)
 
-| Setting | Spec value | Tuned value | Why (the errors it fixed on the tune half) |
+The tune half has 42 alerts: 12 forest_fire, 13 outside_forest and 17 unclear. **The spec weights made no errors on it.** All 12 fires were in DISPATCH (7) or VERIFY (5), none in LOG, and all 13 outside-forest alerts were in LOG. So no change could fix an error. The one change below cuts workload instead, and it was chosen by the user on 8 Oct.
+
+| Setting | Spec value | Tuned value | Why |
 | --- | --- | --- | --- |
-| | | | |
+| `DISPATCH_P_RISKY` | 0.6 | 0.8 | 96% of alerts have r ≥ 2, so the risky rule meant "p ≥ 0.6". One repeat detection (p 0.65) was enough to dispatch, which sent 61% of all alerts. At 0.8, dispatch needs two repeats, or one repeat plus high confidence or FRP. Tune half: fires DISPATCH/VERIFY/LOG went from 7/5/0 to 5/7/0, and unclear dispatches fell from 7 to 4. No fire dropped to LOG. |
+
+**Also tried on the tune half:** `DISPATCH_R` 3 and 4 had the same or a bigger cost to fires and cut fewer dispatches (41.1% and 47.7%, against 63.6%).
+
+**Test half:** computed once, on 8 Oct, after the tuned value was fixed. Nothing was tuned after seeing it.
 
 ### Results on the test half
 
+The test half has 38 alerts: 19 forest_fire, 14 outside_forest and 5 unclear.
+
 | | Spec weights | Tuned weights |
 | --- | --- | --- |
-| Real fires kept (Y of Z) | | |
-| DISPATCH precision (N of M) | | |
-| `unclear` alerts in DISPATCH | | |
+| Real fires kept (Y of Z) | 19 of 19 | 19 of 19 |
+| Fires DISPATCH / VERIFY / LOG | 10 / 9 / 0 | 9 / 10 / 0 |
+| DISPATCH precision (N of M) | 10 of 10 | 9 of 9 |
+| `unclear` alerts in DISPATCH | 2 | 2 |
 
 Tier × final label, tuned weights, test half:
 
 | | forest_fire | outside_forest | recurring_source | unclear |
 | --- | --- | --- | --- | --- |
-| DISPATCH | | | | |
-| VERIFY | | | | |
-| LOG | | | | |
+| DISPATCH | 9 | 0 | 0 | 2 |
+| VERIFY | 10 | 0 | 0 | 3 |
+| LOG | 0 | 14 | 0 | 0 |
+
+**What these numbers cover:**
+- The sample was drawn as about a third from each tier, but LOG is only 6% of all alerts. So these counts describe the sample, not the population.
+- "Real fires kept" counts DISPATCH and VERIFY together. Moving fires from DISPATCH to VERIFY doesn't change it, so the DISPATCH / VERIFY / LOG row is shown too.
 
 ### Full-window numbers
 
+The table uses the tuned weights; spec values are in brackets. The rescored file is `data/scored.csv`. Features, p and r are unchanged; only 2,493 alerts moved, all from DISPATCH to VERIFY.
+
 | Window | Alerts | DISPATCH | Dispatch reduction |
 | --- | --- | --- | --- |
-| A | | | |
-| B | | | |
-| A + B | | | |
+| A | 3,434 | 1,115 (1,919) | 67.5% (44.1%) |
+| B | 6,880 | 2,636 (4,325) | 61.7% (37.1%) |
+| A + B | 10,314 | 3,751 (6,244) | **63.6%** (39.5%) |
 
-Cross-check: Window A outside-forest share __% vs the department's 39%.
+**Cross-check:** the land-cover check (`veg` < 0.30 or `farm` > 0.50) tags 283 of 3,434 Window A alerts as outside forest. That's 8.2%, against the department's 39%. The reason is in [phase-1-foundations.md](phase-1-foundations.md): the department splits alerts by Reserve Forest boundary, while WorldCover sees vegetation. Present this as a cross-check, not as accuracy.
 
 ### Camera
 
@@ -153,15 +170,17 @@ Run on 6 Oct with `python camtest.py`. Results are in `data/camtest.csv`, with p
 
 ### Slide numbers (final wording)
 
-- Staff sent to __% fewer alerts
-- Kept __ of __ real fires
-- __ of __ dispatches were real
-- __ false confirmations in __ min
-- Confirmed in __ seconds
+- Staff sent to 64% fewer alerts (10,314 alerts replayed, Nov 2025–Jan 2026 and Apr–May 2026)
+- Kept 19 of 19 real fires (test half of a hand-checked sample; preliminary)
+- 9 of 9 dispatches were real (test half; 2 more dispatches were `unclear` and are reported separately)
+- 2 false confirmations in 43 min of test footage, at the chosen settings
+- Confirmed in __ seconds (pending: needs 3 latency runs)
 
 ### Known limitations (for Q&A)
 
-- Sample size.
+- Sample size: 38 test alerts. The sample is stratified by tier, so its counts describe the sample, not every alert.
+- Labels are AI pre-labels checked by one person, not two independent labellers. No inter-rater agreement exists.
+- `DISPATCH_P_RISKY` was raised to cut workload, not to fix an observed error. Both weight sets are reported.
 - WorldCover dates from 2021.
 - dNBR is only a hint.
 - This is a replay of public FIRMS data, not FSI's live alerts (§18).
@@ -170,7 +189,8 @@ Run on 6 Oct with `python camtest.py`. Results are in `data/camtest.csv`, with p
 
 | What | From → To | Why | Who |
 | --- | --- | --- | --- |
-| | | | |
+| `DISPATCH_P_RISKY` (§10.4) | 0.6 → 0.8 | Spec weights dispatched 61% of alerts; see Tuning | User decision, Claude Code |
+| Labelling (§14) | two independent labellers → AI pre-labels, every label checked by the user | No second labeller; deadline 9 Oct | User decision |
 
 ### Carry-overs (only demo-blocking items may cross the freeze)
 

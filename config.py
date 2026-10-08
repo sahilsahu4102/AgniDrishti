@@ -62,8 +62,12 @@ WIND_STRONG = 15
 RH_DRY = 30
 SEEN_EVENT = 2  # 3+ pixels, FSI's large-fire rule
 
-# Tiers (§10.4)
-DISPATCH_P, DISPATCH_P_RISKY, DISPATCH_R = 0.9, 0.6, 2
+# Tiers (§10.4). Phase 3 tuning (8 Oct 2026, tune half, 42 alerts): DISPATCH_P_RISKY 0.6 -> 0.8. The spec weights made no
+# errors on the tune half (12/12 forest fires in DISPATCH or VERIFY, no clearly labelled non-fire dispatched), but 96% of
+# alerts have r >= 2, so p 0.65 (one repeat detection) dispatched 61% of all alerts. 0.8 asks for two repeats, or one plus
+# high confidence or FRP. Tune half: fires DISPATCH/VERIFY/LOG 7/5/0 -> 5/7/0, unclear dispatched 7 -> 4. Changed to cut
+# workload, not to fix an error; DISPATCH_R 3 and 4 were also tried (41.1% and 47.7% fewer dispatches vs 63.6% here).
+DISPATCH_P, DISPATCH_P_RISKY, DISPATCH_R = 0.9, 0.8, 2
 VERIFY_P = 0.35
 
 # Dispatch (§12.2)

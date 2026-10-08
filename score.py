@@ -104,7 +104,8 @@ def selftest():
     assert s(confidence='high')[0] == 0.6 and s(frp=18)[0] == 0.6 and 'FRP 18 MW' in s(frp=18)[3]
     assert s(confidence='h', seen=2)[:3] == (0.9, 1, 'DISPATCH')  # float sum must still reach 0.9
     assert s(veg=0.1, farm=0.9, burn='B', recur=9)[0] == 0.0  # clipped at 0
-    assert (tier(0.9, 0), tier(0.6, 2), tier(0.6, 1), tier(0.35, 0), tier(0.34, 7)) == ('DISPATCH', 'DISPATCH', 'VERIFY', 'VERIFY', 'LOG')
+    assert (tier(0.9, 0), tier(0.8, 2), tier(0.8, 1), tier(0.65, 7), tier(0.35, 0), tier(0.34, 7)) == \
+        ('DISPATCH', 'DISPATCH', 'VERIFY', 'VERIFY', 'VERIFY', 'LOG')  # risky bar 0.8 since Phase 3
     assert s('smoke')[:3] == (0.9, 0, 'DISPATCH') and s('smoke')[3].startswith('image check: smoke')
     assert s('nosmoke')[0] == 0.4 and s('fire')[0] == 1.0 and s('farm')[:3] == (0.05, 0, 'LOG') and s('none')[0] == 0.05
     assert s(village_km=1.4)[1] == 2 and s(village_km=4.0)[1] == 1 and s(village_km=6.0)[1] == 0
