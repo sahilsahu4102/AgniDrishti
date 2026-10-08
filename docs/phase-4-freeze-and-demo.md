@@ -12,7 +12,7 @@
 | Geo data | Freeze the data: copy `data/` (scored files, tiles, villages, cells, clips) to a USB stick or a second laptop. |
 | Scoring | Produce the final `scored.csv` from the frozen weights, and confirm `live` and `api` run from the `phase-3` tag. |
 | Vision | Confirm the node runs the locked thresholds. |
-| Hardware + bot | Mount the camera on the tripod facing the monitor and tape down the cables. Pack the spare SG90, spare power and a power bank. Have the hotspot ready. |
+| Hardware + bot | Put the camera phone (IP Webcam) on a stand facing the monitor, with its charger plugged in. Tape down the cables. Pack a power bank. Have the hotspot ready. |
 | Product + pitch | Run three timed rehearsals with the runbook below and record the backup video. Finalise the slides, prepare the Q&A (§17) and write the root `README.md`. |
 
 The root `README.md` is for judges and anyone who opens the repo. It should cover:
@@ -25,29 +25,49 @@ The root `README.md` is for judges and anyone who opens the repo. It should cove
 
 ## Demo runbook
 
-This is a draft. Replace the suggested commands with the real ones during rehearsal 1.
+Real commands as of 8 Oct. Correct anything that rehearsal 1 shows to be wrong. Run everything from `F:\PROJECTS\Agnidrishti` in PowerShell, after `.venv\Scripts\activate`.
 
 ### T−30 minutes
 
-1. **Network.** Put the laptop, the Pi and the phones on one network. Use the hotspot if the venue Wi-Fi blocks Telegram or isolates clients. Check: the Pi can open `http://<LAPTOP_IP>:8000/docs`.
-2. **Reset the demo state by renaming files, not deleting them.**
-   - Move `data/outcomes.csv`, `data/live_scored.csv` and the rehearsal `data/cap_*.xml` files into `data/rehearsal-<n>/`.
-   - Cut `data/live.csv` back to its header.
-   - Restore the clean register with `git checkout burns.csv`.
+1. **Network.** Put the laptop and the camera phone on one network. Use the phone's hotspot if the venue Wi-Fi blocks Telegram or isolates devices.
+   - Start the IP Webcam server on the phone and note the IP it shows.
+   - Check that the laptop can read the stream. This should print `True`:
 
-   Without this reset, the demo alert's id already has an outcome and a CAP file. `/todo` would skip it and `send` wouldn't push it.
-3. **Start the services in this order**, one terminal each (suggested commands):
+     ```powershell
+     python -c "import cv2; ok, f = cv2.VideoCapture('http://<phone-ip>:8080/video').read(); print(ok)"
+     ```
+2. **Reset the demo state.** Do this before **every** rehearsal and before the real demo, and move files rather than delete them. Set `$n` to the rehearsal number:
+
+   ```powershell
+   $n = 1; $d = "data\rehearsal-$n"; New-Item -ItemType Directory -Force $d | Out-Null
+   Move-Item data\outcomes.csv, data\live_scored.csv $d -ErrorAction SilentlyContinue
+   Get-ChildItem data\cap_2026-10-*.xml | Move-Item -Destination $d
+   Copy-Item data\live.csv $d; (Get-Content data\live.csv -TotalCount 1) | Set-Content data\live.csv -Encoding ascii
+   git checkout burns.csv
+   ```
+
+   **Why each line matters:**
+   - **CAP files:** the reset moves only the October CAP files, which are the live alerts. The three `cap_2026-05-27_*` replay files must stay, because a CAP file is what marks an alert as sent, and `send.py` would otherwise re-send them.
+   - **`live.csv`:** cutting it back to its header stops old test alerts at the same spot from counting as repeat detections. Without that, the demo alert can jump straight to DISPATCH and skip the camera.
+   - **`burns.csv`:** `git checkout` removes the two Gate 2 test burns.
+3. **Start the services in this order**, one terminal each:
    1. `uvicorn api:app --host 0.0.0.0 --port 8000`. This serves both the camera API and the dashboard at http://localhost:8000.
    2. `python live.py`
-   3. `python bot.py`
-   4. `python node.py`, with the phone camera stream as `CAMERA_SOURCE`.
+   3. `python bot.py`. Only one copy may run per bot token.
+   4. `$env:CAMERA_SOURCE="http://<phone-ip>:8080/video"; python node.py`. If the phone fails, use the clip file `data\clips\smoke\hpwren_20160604_FIRE_rm-n-mobo-c_smoke.mp4` as `CAMERA_SOURCE` instead.
 4. **Dashboard:** open http://localhost:8000 with the tier filter on DISPATCH + VERIFY. Live changes appear by themselves; nothing needs refreshing.
-5. **Camera:** have the smoke video ready on the monitor, in the direction of the demo point (§13).
+5. **Camera:**
+   - Play `data\clips\smoke\hpwren_20160604_FIRE_rm-n-mobo-c_smoke.mp4` full screen and on repeat, with the monitor bright.
+   - Put the phone in landscape, 0.5–1 m from the screen.
+   - The node faces north (`NODE_HEADING` 0). The demo alert is injected 5 km north of the node, at 30.0950, 78.2000.
 6. **Phones:**
    - Judges join "Range staff" through the invite-link QR code on the slides.
    - A teammate's phone is mirrored on screen as a backup.
-   - The field teammate shares the demo point with the bot now, as a selected location. The bot keeps the last location, so on stage they only need to send the photo and tap.
-7. **Demo row:** have it ready in `demo_row.csv`. It must follow the demo-point rule from Phase 2, with today's date and a time just before your slot.
+   - The field teammate shares the demo point with the bot now, as a selected location: 30.0950, 78.2000. The bot keeps the last location, so on stage they only need to send the photo and tap.
+   - Use the photo that rehearsal showed the bot answers with "Smoke or fire seen": a close-up smoke photo, not a photo of the monitor.
+7. **Demo alert:** nothing to prepare. `python live.py --inject 5` stamps the current time.
+   - It should print `first pass p 0.5 ... VERIFY`.
+   - A `WARNING: not VERIFY` means the reset was skipped.
 8. **Backup video:** open it on the desktop.
 
 ### On stage (§17)
@@ -56,8 +76,8 @@ This is a draft. Replace the suggested commands with the real ones during rehear
 | --- | --- | --- |
 | 0:00–1:00 | Slides | |
 | 1:00–2:15 | Toggle LOG on and off in the dashboard; read 2–3 reasons aloud | Farmland pixel, planned burn, recurring cell |
-| 2:15 | Append `demo_row.csv` to `data/live.csv` | VERIFY within 10 s |
-| 2:15–3:30 | Open `data/cap_<id>.xml` in the browser once it appears | The servo turns, the node posts `smoke`, the alert goes DISPATCH and the judges' phones buzz |
+| 2:15 | Run `python live.py --inject 5` | VERIFY within 10 s |
+| 2:15–3:30 | Open `data/cap_<id>.xml` in the browser once it appears | The node checks 6 frames and posts `smoke`, the alert goes DISPATCH, and the judges' phones buzz (about 1 minute; Run 2 took 53 s) |
 | 3:30–4:15 | The field teammate sends a photo and taps "Real forest fire" | Within about 13 s, the dashboard's live strip announces the field report, and the alert shows p 1.0 with "Field: real forest fire" |
 | 4:15–5:00 | Metrics slide, then the ask | |
 
@@ -66,9 +86,8 @@ This is a draft. Replace the suggested commands with the real ones during rehear
 | Symptom | Do this |
 | --- | --- |
 | Telegram message doesn't arrive | Switch to the hotspot. If still nothing, show the dashboard turning red and open the CAP file. |
-| Servo jitters or doesn't move | Say "fixed camera" and aim the camera by hand. The node still checks and posts. |
-| No `smoke` within 30 s | Switch to the backup video and narrate over it. Never post an outcome by hand. |
-| The Pi can't reach the laptop | Use the hotspot. If that fails, run `node` on the laptop with the USB webcam. |
+| The phone stream drops (the node prints errors, or the alert sits in VERIFY) | Check that the phone is awake and that its IP hasn't changed, then restart `node.py`. If the phone is lost, restart `node.py` with the clip file as `CAMERA_SOURCE`. |
+| No `smoke` within 60 s | Switch to the backup video and narrate over it. Never post an outcome by hand. |
 | Anything else | Backup video. |
 
 **Safety (§18):** no open flame indoors without the organisers' permission. If incense is allowed, keep water nearby and stay at least 2 m from cables and paper.

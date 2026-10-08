@@ -328,7 +328,7 @@ function scaleBar(p, th, tier) {
   s.setAttribute('aria-label', `p ${p.toFixed(2)} on a 0 to 1 scale; VERIFY from ${th.verify}, DISPATCH from ${th.dispatch}, or from ${th.risky} with risk ${th.risky_r} or more`);
   const add = (tag, attrs, text) => { const n = document.createElementNS(SVG, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; s.append(n); return n; };
   for (let i = 0; i < 10; i++) add('rect', { x: x(i / 10), y: 16, width: (W - 16) / 10, height: 6, fill: i % 2 ? INK.paper : INK.ink, stroke: INK.ink, 'stroke-width': 1 });
-  for (const [v, label, anchor] of [[0, '0', 'start'], [th.verify, 'VERIFY', 'middle'], [th.risky, '0.6', 'middle'], [th.dispatch, 'DISPATCH', 'middle'], [1, '1', 'end']]) {
+  for (const [v, label, anchor] of [[0, '0', 'start'], [th.verify, 'VERIFY', 'middle'], [th.risky, String(th.risky), 'end'], [th.dispatch, 'DISPATCH', 'middle'], [1, '1', 'end']]) {
     add('line', { x1: x(v), x2: x(v), y1: 22, y2: 28, stroke: INK.ink, 'stroke-width': 1 });
     add('text', { x: x(v), y: 39, 'text-anchor': anchor, 'font-size': 10, 'font-weight': 600, fill: '#5a4a3a' }, label);
   }
