@@ -23,10 +23,11 @@ cache = {}
 
 
 def table(path):
-    """A CSV as a DataFrame, re-read only when the file changes on disk."""
-    mtime = path.stat().st_mtime if path.exists() else None
-    if cache.get(path, (0,))[0] != mtime:
-        cache[path] = (mtime, pd.read_csv(path) if mtime else pd.DataFrame())
+    """A CSV as a DataFrame, re-read only when the file changes on disk (time and size: file times are coarse, and rows are appended)."""
+    st = path.stat() if path.exists() else None
+    key = (st.st_mtime_ns, st.st_size) if st else None
+    if cache.get(path, (0,))[0] != key:
+        cache[path] = (key, pd.read_csv(path) if key else pd.DataFrame())
     return cache[path][1]
 
 
@@ -127,8 +128,12 @@ def add_burn(b: Burn):
     row = {'id': f'B{stamp}', 'lat': round(b.lat, 5), 'lon': round(b.lon, 5), 'r_km': b.r_km,
            'start': b.start.strftime('%Y-%m-%d %H:%M'), 'end': b.end.strftime('%Y-%m-%d %H:%M'),
            'note': b.note.replace('\n', ' ').strip()}
+    new = not c.BURNS.exists() or c.BURNS.stat().st_size == 0  # a headerless first row would be read back as the header
     with open(c.BURNS, 'a', newline='', encoding='utf-8') as f:
-        csv.writer(f).writerow(row.values())
+        w = csv.writer(f)
+        if new:
+            w.writerow(row.keys())
+        w.writerow(row.values())
     return row
 
 

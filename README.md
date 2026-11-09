@@ -95,6 +95,20 @@ The full runbook, including the reset between rehearsals, is in [docs/phase-4-fr
 | `camtest.py`, `s2.py` | Camera false-alarm test; Sentinel-2 dNBR and labelling sheet |
 | `docs/` | Phase plans and gate reports, with every measured number |
 
+## Tests
+
+```bash
+pip install -r requirements-dev.txt   # pytest and httpx; the rest comes from requirements.txt
+pytest                                # 54 tests, about 2 seconds, no network
+```
+
+- **Scoring rules** (`tests/test_score.py`): every rule that moves p, the tier thresholds, the image-check overrides, and a property check over 500 random alerts (p stays in 0–1, risk in 0–7, the tier always matches the thresholds, a DISPATCH never has p under 0.8, and every reason that moved p appears in the alert's text).
+- **Geometry** (`tests/test_geo.py`): distances against known city pairs, bearings, and offset-then-measure round trips.
+- **API** (`tests/test_api.py`): the dashboard and camera-node endpoints on small CSV files in a temp folder, never your real `data/` or `burns.csv`. It covers the alert list and its replay windows, the score ledger for one alert, malformed ids, the planned-burn register and its input limits, the camera work list, recorded outcomes (latest wins), and CAP files.
+- **The results in this README** (`test_readme_replay_numbers_reproduce_from_the_data`): recomputes 3,751 DISPATCH of 10,314 alerts and the 19 of 19 real forest fires kept, using the committed hand labels. It needs `data/scored.csv` (not in git; `python score.py` creates it) and is skipped without it.
+
+The first run of the API tests found two bugs, both fixed: the first planned burn written to a missing `burns.csv` was read back as the header and vanished, and the table cache could miss a write made within the same file-timestamp tick, which on Windows can be several milliseconds. CI runs the suite on every push (`.github/workflows/ci.yml`, with only the packages the tests import, not the camera and YOLO stack).
+
 ## Limitations
 
 - **This is a replay of public FIRMS data, not FSI's live alerts.** Live mode polls FIRMS NOAA-20 and NOAA-21 but is off by default.
