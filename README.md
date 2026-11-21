@@ -2,6 +2,8 @@
 
 AgniDrishti checks every satellite fire alert before anyone is sent out, so forest staff only go to alerts that are likely to be real, dangerous forest fires.
 
+🎥 **[Watch the demo video](https://drive.google.com/file/d/1ndERcXEQxEusDIIgLao9l2CWqL_B7qwl/view?usp=sharing)**
+
 It does not detect fires itself. It takes NASA FIRMS VIIRS alerts for Uttarakhand, checks each one against land cover, repeat detections, past fires, planned burns, terrain and weather, and sorts it into three tiers, each with plain-language reasons:
 
 - **DISPATCH:** message field staff now (Telegram, plus a CAP 1.2 alert file).
